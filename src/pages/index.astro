@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+const pageContent = await getEntry('pages', 'home');
+const { title, description, hero, sections, cards, cta } = pageContent.data;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="bg-gradient-to-b from-blue-50 to-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          {hero.heading}
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          {hero.text}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {sections && sections[0] && (
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            {sections[0].title}
+          </h2>
+          {sections[0].description && (
+            <p class="text-lg text-gray-600">
+              {sections[0].description}
+            </p>
+          )}
+        </div>
+
+        {cards && (
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {cards.map((card) => (
+              <a href={card.link} class="group">
+                <div class="bg-white border-2 border-gray-200 rounded-lg p-8 hover:border-blue-500 hover:shadow-lg transition h-full">
+                  <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition">
+                    {card.title}
+                  </h3>
+                  <p class="text-gray-600">
+                    {card.description}
+                  </p>
+                  <div class="mt-6 text-blue-600 font-semibold group-hover:translate-x-2 transition-transform inline-block">
+                    {card.linkText} →
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  {cta && (
+    <section class="bg-blue-900 text-white py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">
+          {cta.heading}
+        </h2>
+        <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+          {cta.text}
+        </p>
+        <a
+          href={cta.buttonLink}
+          target="_blank"
+          rel="noopener"
+          class="inline-block bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
+        >
+          {cta.buttonText}
+        </a>
+      </div>
+    </section>
+  )}
+</BaseLayout>

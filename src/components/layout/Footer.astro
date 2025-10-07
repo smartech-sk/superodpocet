@@ -1,0 +1,51 @@
+---
+// Footer component for Superodpočet.sk
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-gray-900 text-white mt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Superodpočet.sk</h3>
+        <p class="text-gray-400 text-sm">
+          Informácie a nástroje pre daňové odpočty na Slovensku.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Odkazy</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/vyskum-a-vyvoj" class="text-gray-400 hover:text-white transition">
+              Výskum a vývoj
+            </a>
+          </li>
+          <li>
+            <a href="/investicie" class="text-gray-400 hover:text-white transition">
+              Investície
+            </a>
+          </li>
+          <li>
+            <a href="/patent-box" class="text-gray-400 hover:text-white transition">
+              Patent Box
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Kontakt</h3>
+        <p class="text-gray-400 text-sm">
+          <a href="https://www.smartech.sk" target="_blank" rel="noopener" class="hover:text-white transition">
+            SmarTech Solutions
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+      <p>&copy; {currentYear} SmarTech Solutions. Všetky práva vyhradené.</p>
+    </div>
+  </div>
+</footer>

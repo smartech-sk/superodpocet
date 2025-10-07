@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FAQ from '../components/widgets/FAQ.astro';
+import { getEntry } from 'astro:content';
+
+const pageContent = await getEntry('pages', 'investicie');
+const { Content } = await pageContent.render();
+const { title, description, hero, benefits, warning } = pageContent.data;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="bg-gradient-to-b from-blue-50 to-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          {hero.heading}
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+          {hero.text}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl">
+        <div class="prose prose-lg max-w-none mb-8">
+          <Content />
+        </div>
+
+        {benefits && (
+          <ul class="space-y-4 mb-8">
+            {benefits.map((benefit) => (
+              <li class="flex gap-3">
+                <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span class="text-gray-600" set:html={benefit} />
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {warning && (
+          <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
+            <p class="text-amber-800">
+              <strong>Pozor:</strong> {warning}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-gray-50 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Kalkulačka</h2>
+        <div class="bg-white rounded-lg shadow-md p-8">
+          <p class="text-center text-gray-600">
+            Kalkulačka bude implementovaná v ďalšej fáze.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Proces uplatnenia</h2>
+        <div class="space-y-6">
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+              A
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Overenie, že ide o investíciu podľa § 30e
+              </h3>
+              <p class="text-gray-600">
+                Kontrola, či investícia spadá pod podporované technológie Priemyslu 4.0.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+              B
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Vypracovanie investičného plánu
+              </h3>
+              <p class="text-gray-600">
+                Príprava dokumentácie k plánovanej investícii.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+              C
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Aktivácia investície
+              </h3>
+              <p class="text-gray-600">
+                Zaradenie majetku do užívania.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+              D
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Daňový výpočet a evidencia
+              </h3>
+              <p class="text-gray-600">
+                Vypočítanie výšky odpočtu a vedenie evidencie.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+              E
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Kontrola splnenia investičného limitu
+              </h3>
+              <p class="text-gray-600">
+                Overenie podmienok pre uplatnenie odpočtu.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+              F
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Uplatnenie superodpočtu v daňovom priznaní
+              </h3>
+              <p class="text-gray-600">
+                Zahrnutie odpočtu do daňového priznania.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FAQ category="investicie" />
+
+  <section class="bg-blue-900 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold mb-6">
+        Máte investíciu, ktorá by mohla spadať pod Priemysel 4.0?
+      </h2>
+      <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+        Neváhajte a poraďte sa s nami.
+      </p>
+      <a
+        href="https://www.smartech.sk"
+        target="_blank"
+        rel="noopener"
+        class="inline-block bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
+      >
+        Kontaktujte nás
+      </a>
+    </div>
+  </section>
+</BaseLayout>
