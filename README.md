@@ -268,4 +268,4 @@ Proprietary - SmarTech Solutions
 
 - Production Site: https://superodpocet.sk
 - SmarTech Solutions: https://www.smartech.sk
-- Repository: https://github.com/[your-org]/superodpocet
+- Repository: https://github.com/smartech-sk/superodpocet
