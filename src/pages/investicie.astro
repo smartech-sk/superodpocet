@@ -1,11 +1,45 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FAQ from '../components/widgets/FAQ.astro';
+import ProcessSteps from '../components/widgets/ProcessSteps.astro';
 import { getEntry } from 'astro:content';
 
 const pageContent = await getEntry('pages', 'investicie');
 const { Content } = await pageContent.render();
 const { title, description, hero, benefits, warning } = pageContent.data;
+
+const processSteps = [
+  {
+    letter: 'A',
+    title: 'Overenie, že ide o investíciu podľa § 30e',
+    description: 'Kontrola, či investícia spadá pod podporované technológie Priemyslu 4.0.',
+  },
+  {
+    letter: 'B',
+    title: 'Vypracovanie investičného plánu',
+    description: 'Príprava dokumentácie k plánovanej investícii.',
+  },
+  {
+    letter: 'C',
+    title: 'Aktivácia investície',
+    description: 'Zaradenie majetku do užívania.',
+  },
+  {
+    letter: 'D',
+    title: 'Daňový výpočet a evidencia',
+    description: 'Vypočítanie výšky odpočtu a vedenie evidencie.',
+  },
+  {
+    letter: 'E',
+    title: 'Kontrola splnenia investičného limitu',
+    description: 'Overenie podmienok pre uplatnenie odpočtu.',
+  },
+  {
+    letter: 'F',
+    title: 'Uplatnenie superodpočtu v daňovom priznaní',
+    description: 'Zahrnutie odpočtu do daňového priznania.',
+  },
+];
 ---
 
 <BaseLayout title={title} description={description}>
@@ -66,98 +100,7 @@ const { title, description, hero, benefits, warning } = pageContent.data;
     </div>
   </section>
 
-  <section class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8">Proces uplatnenia</h2>
-        <div class="space-y-6">
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              A
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Overenie, že ide o investíciu podľa § 30e
-              </h3>
-              <p class="text-gray-600">
-                Kontrola, či investícia spadá pod podporované technológie Priemyslu 4.0.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              B
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Vypracovanie investičného plánu
-              </h3>
-              <p class="text-gray-600">
-                Príprava dokumentácie k plánovanej investícii.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              C
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Aktivácia investície
-              </h3>
-              <p class="text-gray-600">
-                Zaradenie majetku do užívania.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              D
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Daňový výpočet a evidencia
-              </h3>
-              <p class="text-gray-600">
-                Vypočítanie výšky odpočtu a vedenie evidencie.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              E
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Kontrola splnenia investičného limitu
-              </h3>
-              <p class="text-gray-600">
-                Overenie podmienok pre uplatnenie odpočtu.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              F
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Uplatnenie superodpočtu v daňovom priznaní
-              </h3>
-              <p class="text-gray-600">
-                Zahrnutie odpočtu do daňového priznania.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <ProcessSteps steps={processSteps} />
 
   <FAQ category="investicie" />
 

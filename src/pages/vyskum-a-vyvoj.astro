@@ -1,11 +1,45 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FAQ from '../components/widgets/FAQ.astro';
+import ProcessSteps from '../components/widgets/ProcessSteps.astro';
 import { getEntry } from 'astro:content';
 
 const pageContent = await getEntry('pages', 'vyskum-a-vyvoj');
 const { Content } = await pageContent.render();
 const { title, description, hero, benefits } = pageContent.data;
+
+const processSteps = [
+  {
+    letter: 'A',
+    title: 'Identifikácia činností ako výskum a vývoj',
+    description: 'Určte, ktoré aktivity vo vašej firme spĺňajú podmienky VaV projektu.',
+  },
+  {
+    letter: 'B',
+    title: 'Vypracovanie písomného projektu VaV',
+    description: 'Vytvorte dokumentáciu projektu podľa zákonných požiadaviek.',
+  },
+  {
+    letter: 'C',
+    title: 'Oddelená evidencia a vyčíslenie daňových výdavkov',
+    description: 'Vedenie osobitnej evidencie nákladov súvisiacich s projektom.',
+  },
+  {
+    letter: 'D',
+    title: 'Kontrola vylúčených položiek a zákazu kumulácie',
+    description: 'Overenie, že náklady nie sú vylúčené a nekombinujú sa s inými odpočtami.',
+  },
+  {
+    letter: 'E',
+    title: 'Výpočet superodpočtu na VaV',
+    description: 'Vypočítanie výšky odpočtu podľa platnej legislatívy.',
+  },
+  {
+    letter: 'F',
+    title: 'Uplatnenie superodpočtu v daňovom priznaní',
+    description: 'Zahrnutie odpočtu do daňového priznania.',
+  },
+];
 ---
 
 <BaseLayout title={title} description={description}>
@@ -56,98 +90,7 @@ const { title, description, hero, benefits } = pageContent.data;
     </div>
   </section>
 
-  <section class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8">Proces uplatnenia</h2>
-        <div class="space-y-6">
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              A
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Identifikácia činností ako výskum a vývoj
-              </h3>
-              <p class="text-gray-600">
-                Určte, ktoré aktivity vo vašej firme spĺňajú podmienky VaV projektu.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              B
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Vypracovanie písomného projektu VaV
-              </h3>
-              <p class="text-gray-600">
-                Vytvorte dokumentáciu projektu podľa zákonných požiadaviek.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              C
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Oddelená evidencia a vyčíslenie daňových výdavkov
-              </h3>
-              <p class="text-gray-600">
-                Vedenie osobitnej evidencie nákladov súvisiacich s projektom.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              D
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Kontrola vylúčených položiek a zákazu kumulácie
-              </h3>
-              <p class="text-gray-600">
-                Overenie, že náklady nie sú vylúčené a nekombinujú sa s inými odpočtami.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              E
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Výpočet superodpočtu na VaV
-              </h3>
-              <p class="text-gray-600">
-                Vypočítanie výšky odpočtu podľa platnej legislatívy.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              F
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Uplatnenie superodpočtu v daňovom priznaní
-              </h3>
-              <p class="text-gray-600">
-                Zahrnutie odpočtu do daňového priznania.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <ProcessSteps steps={processSteps} />
 
   <FAQ category="vav" />
 

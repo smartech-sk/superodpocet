@@ -1,11 +1,45 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FAQ from '../components/widgets/FAQ.astro';
+import ProcessSteps from '../components/widgets/ProcessSteps.astro';
 import { getEntry } from 'astro:content';
 
 const pageContent = await getEntry('pages', 'patent-box');
 const { Content } = await pageContent.render();
 const { title, description, hero, benefits, warning } = pageContent.data;
+
+const processSteps = [
+  {
+    letter: 'A',
+    title: 'Overenie, či ide o chránené riešenie',
+    description: 'Kontrola, či duševné vlastníctvo spĺňa podmienky pre Patent Box.',
+  },
+  {
+    letter: 'B',
+    title: 'Identifikácia výnosov z predaja',
+    description: 'Určenie príjmov z využívania duševného vlastníctva.',
+  },
+  {
+    letter: 'C',
+    title: 'Nastavenie evidencie',
+    description: 'Vytvorenie systému na sledovanie príjmov z IP.',
+  },
+  {
+    letter: 'D',
+    title: 'Výpočet úspory',
+    description: 'Vypočítanie výšky daňového zvýhodnenia.',
+  },
+  {
+    letter: 'E',
+    title: 'Úprava výdavkov o zodpovedajúcu časť',
+    description: 'Správne zaúčtovanie odpočtu.',
+  },
+  {
+    letter: 'F',
+    title: 'Uplatnenie v daňovom priznaní',
+    description: 'Zahrnutie Patent Box do daňového priznania.',
+  },
+];
 ---
 
 <BaseLayout title={title} description={description}>
@@ -69,98 +103,7 @@ const { title, description, hero, benefits, warning } = pageContent.data;
     </div>
   </section>
 
-  <section class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8">Proces uplatnenia</h2>
-        <div class="space-y-6">
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              A
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Overenie, či ide o chránené riešenie
-              </h3>
-              <p class="text-gray-600">
-                Kontrola, či duševné vlastníctvo spĺňa podmienky pre Patent Box.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              B
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Identifikácia výnosov z predaja
-              </h3>
-              <p class="text-gray-600">
-                Určenie príjmov z využívania duševného vlastníctva.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              C
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Nastavenie evidencie
-              </h3>
-              <p class="text-gray-600">
-                Vytvorenie systému na sledovanie príjmov z IP.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              D
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Výpočet úspory
-              </h3>
-              <p class="text-gray-600">
-                Vypočítanie výšky daňového zvýhodnenia.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              E
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Úprava výdavkov o zodpovedajúcu časť
-              </h3>
-              <p class="text-gray-600">
-                Správne zaúčtovanie odpočtu.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-              F
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Uplatnenie v daňovom priznaní
-              </h3>
-              <p class="text-gray-600">
-                Zahrnutie Patent Box do daňového priznania.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <ProcessSteps steps={processSteps} />
 
   <FAQ category="patent-box" />
 
