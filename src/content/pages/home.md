@@ -1,18 +1,18 @@
 ---
 title: "Domov"
-description: "Váš komplexný sprievodca daňovými odpočtami na Slovensku"
+description: "Premeňte inováciu na konkurenčnú výhodu aj vo vašom daňovom priznaní."
 hero:
-  heading: "Vitajte na Superodpočet.sk"
-  text: "Váš komplexný sprievodca daňovými odpočtami na Slovensku. Získajte informácie, použite naše kalkulačky a kontaktujte odborníkov z SmarTech Solutions."
+  heading: "Znížte si daň z príjmov pomocou daňových úľav na výskum a vývoj, Priemysel 4.0 a patent box."
+  text: "Legálne a bez zbytočného rizika."
 sections:
   - title: "Aký typ daňového zvýhodnenia Vás zaujíma?"
-    description: "Vyberte si oblasť, ktorá najviac zodpovedá činnosti Vašej firmy."
+    description: "Vyberte si oblasť, ktorá najviac zodpovedá činnosti Vašej firmy. Získate prehľadné informácie o možnostiach odpočtu, podmienkach aj výhodách."
 cards:
-  - title: "Odpočet na výskum a vývoj"
+  - title: "Superodpočet na výskum a vývoj"
     description: "Pre firmy, ktoré inovujú, vyvíjajú nové produkty, procesy alebo technológie."
     link: "/vyskum-a-vyvoj"
     linkText: "Zistiť viac"
-  - title: "Odpočet na investície do Priemyslu 4.0"
+  - title: "Superodpočet na investície do Priemyslu 4.0"
     description: "Pre podniky, ktoré investujú do moderných strojov, digitalizácie alebo automatizácie."
     link: "/investicie"
     linkText: "Zistiť viac"
@@ -21,7 +21,7 @@ cards:
     link: "/patent-box"
     linkText: "Zistiť viac"
 cta:
-  heading: "Potrebujete poradiť?"
+  heading: "Získajte odpoveď ihneď od odborníka s praxou."
   text: "Každá firma je iná a preto sa radi pozrieme na konkrétne možnosti uplatnenia superodpočtu u Vás."
   buttonText: "Kontaktujte SmarTech Solutions"
   buttonLink: "https://www.smartech.sk"

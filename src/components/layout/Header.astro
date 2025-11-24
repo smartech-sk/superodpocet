@@ -1,140 +1,70 @@
 ---
-// Header component for Superodpočet.sk
+type NavItem = {
+  href: string;
+  label: string;
+};
+
+const navItems: NavItem[] = [
+  { href: "/vyskum-a-vyvoj", label: "Výskum a vývoj" },
+  { href: "/investicie", label: "Investície do Priemyslu 4.0" },
+  { href: "/patent-box", label: "Patent Box" },
+  { href: "/#seminare", label: "Semináre" },
+  { href: "/#kontakt", label: "Kontakt" },
+];
+
+// Logika pre aktívnu položku menu
 const currentPath = Astro.url.pathname;
 
 const isActive = (path: string) => {
-  if (path === '/' && currentPath === '/') return true;
-  if (path !== '/' && currentPath.startsWith(path)) return true;
+  if (path === "/" && currentPath === "/") return true;
+  if (path !== "/" && currentPath.startsWith(path)) return true;
   return false;
 };
 ---
 
-<header class="bg-white shadow-sm">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center py-6">
-      <div class="flex items-center">
-        <a href="/" class="text-2xl font-bold text-blue-900">
-          Superodpočet.sk
-        </a>
-      </div>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo">
+      SUPERODPOČET<span class="logo-accent">.sk</span>
+    </a>
 
-      <nav class="hidden md:flex space-x-8">
-        <a
-          href="/"
-          class:list={[
-            "transition border-b-2",
-            isActive('/')
-              ? "text-blue-900 font-semibold border-blue-900"
-              : "text-gray-700 hover:text-blue-900 border-transparent hover:border-gray-300"
-          ]}
-        >
-          Domov
-        </a>
-        <a
-          href="/vyskum-a-vyvoj"
-          class:list={[
-            "transition border-b-2",
-            isActive('/vyskum-a-vyvoj')
-              ? "text-blue-900 font-semibold border-blue-900"
-              : "text-gray-700 hover:text-blue-900 border-transparent hover:border-gray-300"
-          ]}
-        >
-          Výskum a vývoj
-        </a>
-        <a
-          href="/investicie"
-          class:list={[
-            "transition border-b-2",
-            isActive('/investicie')
-              ? "text-blue-900 font-semibold border-blue-900"
-              : "text-gray-700 hover:text-blue-900 border-transparent hover:border-gray-300"
-          ]}
-        >
-          Investície
-        </a>
-        <a
-          href="/patent-box"
-          class:list={[
-            "transition border-b-2",
-            isActive('/patent-box')
-              ? "text-blue-900 font-semibold border-blue-900"
-              : "text-gray-700 hover:text-blue-900 border-transparent hover:border-gray-300"
-          ]}
-        >
-          Patent Box
-        </a>
-      </nav>
+    <button
+      class="mobile-nav-toggle"
+      type="button"
+      aria-label="Otvoriť navigáciu"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+      <span class="sr-only">Prepínač navigácie</span>
+      <span class="mobile-nav-icon"></span>
+    </button>
 
-      <div class="md:hidden">
-        <button
-          id="mobile-menu-button"
-          type="button"
-          class="text-gray-700 hover:text-blue-900"
-          aria-label="Otvoriť menu"
-        >
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div id="mobile-menu" class="hidden md:hidden pb-4">
-      <div class="flex flex-col space-y-2">
+    <nav id="mobile-menu" class="main-nav" aria-label="Hlavná navigácia">
+      {navItems.map((item) => (
         <a
-          href="/"
-          class:list={[
-            "py-2 transition",
-            isActive('/')
-              ? "text-blue-900 font-semibold"
-              : "text-gray-700 hover:text-blue-900"
-          ]}
+          href={item.href}
+          class={isActive(item.href)
+            ? "main-nav-link main-nav-link--active"
+            : "main-nav-link"}
         >
-          Domov
+          {item.label}
         </a>
-        <a
-          href="/vyskum-a-vyvoj"
-          class:list={[
-            "py-2 transition",
-            isActive('/vyskum-a-vyvoj')
-              ? "text-blue-900 font-semibold"
-              : "text-gray-700 hover:text-blue-900"
-          ]}
-        >
-          Výskum a vývoj
-        </a>
-        <a
-          href="/investicie"
-          class:list={[
-            "py-2 transition",
-            isActive('/investicie')
-              ? "text-blue-900 font-semibold"
-              : "text-gray-700 hover:text-blue-900"
-          ]}
-        >
-          Investície
-        </a>
-        <a
-          href="/patent-box"
-          class:list={[
-            "py-2 transition",
-            isActive('/patent-box')
-              ? "text-blue-900 font-semibold"
-              : "text-gray-700 hover:text-blue-900"
-          ]}
-        >
-          Patent Box
-        </a>
-      </div>
-    </div>
+      ))}
+    </nav>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const header = document.querySelector(".site-header");
+      const toggle = document.querySelector(".mobile-nav-toggle");
+      const menu = document.getElementById("mobile-menu");
+
+      if (!header || !toggle || !menu) return;
+
+      toggle.addEventListener("click", () => {
+        const isOpen = header.classList.toggle("site-header--mobile-open");
+        toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    });
+  </script>
 </header>
-
-<script>
-  const button = document.getElementById('mobile-menu-button');
-  const menu = document.getElementById('mobile-menu');
-
-  button?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
-  });
-</script>
