@@ -1,51 +1,45 @@
 ---
-// Footer component for Superodpočet.sk
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-gray-900 text-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Superodpočet.sk</h3>
-        <p class="text-gray-400 text-sm">
+<footer class="site-footer">
+  <!-- oddelenie od obsahu cez celú šírku -->
+  <div class="home-section-divider home-section-divider--full"></div>
+
+  <div class="container site-footer-inner">
+    <div class="site-footer-columns">
+      <div class="site-footer-column">
+        <h3 class="site-footer-title">Superodpočet.sk</h3>
+        <p class="site-footer-text">
           Informácie a nástroje pre daňové odpočty na Slovensku.
         </p>
       </div>
 
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Odkazy</h3>
-        <ul class="space-y-2 text-sm">
-          <li>
-            <a href="/vyskum-a-vyvoj" class="text-gray-400 hover:text-white transition">
-              Výskum a vývoj
-            </a>
-          </li>
-          <li>
-            <a href="/investicie" class="text-gray-400 hover:text-white transition">
-              Investície
-            </a>
-          </li>
-          <li>
-            <a href="/patent-box" class="text-gray-400 hover:text-white transition">
-              Patent Box
-            </a>
-          </li>
+      <div class="site-footer-column">
+        <h3 class="site-footer-title">Odkazy</h3>
+        <ul class="site-footer-links">
+          <li><a href="/vyskum-a-vyvoj">Výskum a vývoj</a></li>
+          <li><a href="/investicie">Investície do Priemyslu 4.0</a></li>
+          <li><a href="/patent-box">Patent Box</a></li>
         </ul>
       </div>
 
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Kontakt</h3>
-        <p class="text-gray-400 text-sm">
-          <a href="https://www.smartech.sk" target="_blank" rel="noopener" class="hover:text-white transition">
+      <div class="site-footer-column">
+        <h3 class="site-footer-title">Kontakt</h3>
+        <p class="site-footer-text">
+          <a
+            href="https://www.smartech.sk"
+            target="_blank"
+            rel="noopener"
+          >
             SmarTech Solutions
           </a>
         </p>
       </div>
     </div>
 
-    <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-      <p>&copy; {currentYear} SmarTech Solutions. Všetky práva vyhradené.</p>
+    <div class="site-footer-bottom">
+      <p>© {currentYear} SmarTech Solutions. Všetky práva vyhradené.</p>
     </div>
   </div>
 </footer>

@@ -19,12 +19,12 @@ type ContactInfo = {
 const pageContent = await getEntry("pages", "home");
 const { title, description, hero, sections, cards, cta } = pageContent.data;
 
-// text pri seminároch – podľa dizajnu
+// text pri seminároch
 const seminarSection = {
   title: "Chcete využiť superodpočet?",
   lead: "Zistite počas 30 minút ako na to.",
   text:
-    "Tematika superodpočtu je odborná a často nejasná – no nemusí to tak byť. Pozývame vás na 30‑ alebo 60‑minútový webinár, na ktorom vám naši konzultanti vysvetlia, aké máte konkrétne možnosti.",
+    "Tematika superodpočtu je odborná a často nejasná – no nemusí to tak byť. Pozývame vás na 30‑ alebo 60‑minútový webinár, na ktorom Vám naši konzultanti vysvetlia:",
 };
 
 const seminars: Seminar[] = [
@@ -58,7 +58,7 @@ const contact: ContactInfo = {
 ---
 
 <BaseLayout title={title} description={description}>
-  <!-- HERO: veľké H1 ako na obrázku -->
+  <!-- HERO: veľké H1 -->
   <section class="home-hero">
     <div class="container">
       <h1 class="home-hero-title">
@@ -181,7 +181,12 @@ const contact: ContactInfo = {
         </div>
 
         <div class="home-contact-photo">
-          <span>Fotka kontaktu</span>
+          <img
+            src="/images/MGO.webp"
+            alt="Ing. Mgr. Martin Gondár"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       </div>
     </div>

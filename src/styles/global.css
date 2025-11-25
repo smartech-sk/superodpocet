@@ -11,6 +11,11 @@
   /* Odsadenia v sekciách a úvode */
   --section-padding-y: 120px;
   --hero-padding-y: 150px;
+  --texy-padding: 75px;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* Reset box modelu */
@@ -30,19 +35,6 @@ body {
   font-size: 20px;
   line-height: 1.4;
   color: var(--color-blue);
-
-  /* Jemný prechod na pozadí, priehľadnosť ~10 % */
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(16, 68, 125, 0.1),
-      transparent 60%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      rgba(178, 24, 50, 0.1),
-      transparent 60%
-    );
 }
 
 main {
@@ -59,6 +51,10 @@ a {
   max-width: 1120px;
   margin-inline: auto;
   padding-inline: 24px;
+}
+
+.site-header .container {
+  max-width: 100%;
 }
 
 /* Typografia */
@@ -118,7 +114,7 @@ h2 {
 
 
 .logo {
-  font-size: 24px; /* podľa PDF */
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -236,14 +232,73 @@ h2 {
 /* FOOTER */
 
 .site-footer {
-  padding-block: 32px;
+  background: linear-gradient(90deg, rgba(16, 68, 125, 0.1), rgba(178, 24, 50, 0.1));
+  padding-top: 0;          /* divider je nalepený na obsah */
+  padding-bottom: 50px;
   font-size: 16px;
   color: #6b7280;
 }
 
-.site-footer p {
+.site-footer-inner {
+  padding-top: 50px;
+}
+
+.site-footer-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.site-footer-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-blue);
+  margin: 0 0 12px;
+}
+
+.site-footer-text {
+  margin: 0;
+  font-size: 14px;
+}
+
+.site-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
+.site-footer-links li + li {
+  margin-top: 4px;
+}
+
+.site-footer-links a, .site-footer-text a {
+  text-decoration: none;
+  color: #6b7280;
+}
+
+.site-footer-links a:hover, .site-footer-text a:hover {
+  color: var(--color-blue);
+}
+
+.site-footer-bottom {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+  text-align: center;
+}
+
+.site-footer-bottom p {
   margin: 0;
 }
+
+@media (max-width: 768px) {
+  .site-footer-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 /* ----------------------- */
 /* HOMEPAGE – HERO BLOK    */
@@ -270,7 +325,7 @@ h2 {
 
 .home-section {
   /* vrchné a spodné odsadenie v sekciách 120px */
-  padding-block: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
 }
 
 .home-section--light {
@@ -279,11 +334,16 @@ h2 {
 }
 
 .home-section-divider {
-  width: 64px;
+  width: 80px;
   height: 4px; /* farebná linka hrúbka 4px */
   background: linear-gradient(90deg, var(--color-blue), var(--color-red));
   border-radius: 999px;
-  margin-bottom: 32px;
+  margin-bottom: var(--section-padding-y);
+}
+
+.home-section-divider--full {
+  width: 100%;
+  margin-bottom: 0;
 }
 
 .home-section-lead {
@@ -292,7 +352,7 @@ h2 {
 }
 
 .home-section-text {
-  margin: 0 0 32px;
+  margin: 50px 0 50px;
   max-width: 720px;
 }
 
@@ -303,43 +363,43 @@ h2 {
 .home-seminars {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 25px;
 }
 
 .home-seminar-card {
   display: grid;
   grid-template-columns: minmax(0, 220px) minmax(0, 1fr) auto;
-  align-items: stretch;
-  column-gap: 24px;
-  padding: 20px 24px;
+  align-items: center;
+  column-gap: 45px;
+  padding-right: 35px;
   border-radius: var(--radius);
 
   /* biele pozadie, mierna priehľadnosť */
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
   transition: box-shadow 0.15s ease-out, transform 0.15s ease-out;
 }
 
 .home-seminar-card:hover {
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .home-seminar-date {
   /* modré pozadie za dátumom – 10 % priehľadnosť */
   background-color: rgba(16, 68, 125, 0.1);
   border-radius: var(--radius);
-  padding: 12px 16px;
+  padding: 35px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  font-size: 14px;
+  align-items: center;
+  font-size: 18px;
   color: var(--color-blue);
 }
 
-.home-seminar-date-day {
-  font-weight: 700;
+.home-seminar-date-place {
+    color: var(--color-red);
 }
 
 .home-seminar-date-place {
@@ -349,11 +409,12 @@ h2 {
 .home-seminar-content h3 {
   font-size: 24px; /* názvy seminárov 24px */
   margin: 0 0 4px;
+  font-weight: 700;
 }
 
 .home-seminar-arrow {
   align-self: center;
-  font-size: 28px;
+  font-size: 50px;
   opacity: 0.6;
 }
 
@@ -363,17 +424,13 @@ h2 {
 
 .home-contact-card {
   margin-top: 32px;
-  padding: 32px;
+  padding: 45px 90px 45px 90px;
   border-radius: var(--radius);
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   align-items: center;
   gap: 32px;
-  background: linear-gradient(
-    90deg,
-    rgba(16, 68, 125, 0.06),
-    rgba(178, 24, 50, 0.08)
-  );
+  background: linear-gradient(90deg, rgba(16, 68, 125, 0.1), rgba(178, 24, 50, 0.1));
 }
 
 .home-contact-name {
@@ -384,7 +441,7 @@ h2 {
 
 .home-contact-role {
   font-size: 18px;
-  margin: 0 0 16px;
+  margin: 0 0 25px;
 }
 
 .home-contact-contact {
@@ -395,15 +452,16 @@ h2 {
 
 .home-contact-photo {
   justify-self: end;
-  width: 180px;
-  height: 220px;
   border-radius: var(--radius);
   background: #e5e7eb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  color: #6b7280;
+  overflow: hidden;
+}
+
+.home-contact-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ----------------------- */
@@ -417,7 +475,7 @@ h2 {
 .home-benefit-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+  gap: 45px;
   margin-top: 32px;
 }
 
@@ -428,15 +486,21 @@ h2 {
   flex-direction: column;
   justify-content: space-between;
   min-height: 230px;
-  padding: 24px 24px 0;
+  padding: 32px 40px 0;
   border-radius: var(--radius);
   color: #ffffff;
   overflow: hidden;
+  transition: box-shadow 0.30s ease-out, transform 0.30s ease-out;
 
   /* jeden dlhý gradient rozdelený na 3 časti */
   background-image: linear-gradient(90deg, var(--color-blue), var(--color-red));
   background-size: 300% 100%; /* 3 karty vedľa seba = 300 % */
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+}
+
+.home-benefit-card:hover {
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.2);
+  transform: translateY(-5px);  
 }
 
 /* ľavá, stredná a pravá časť gradientu */
@@ -452,8 +516,8 @@ h2 {
   background-position: 100% 0%;
 }
 
-/* jemný „lesk“ na vrchu karty */
-.home-benefit-card::before {
+/* jemný „lesk“ na vrchu karty po prechode kurzorom */
+.home-benefit-card:hover::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -487,7 +551,7 @@ h2 {
   align-items: center;
   justify-content: center;
   height: 64px;
-  margin-inline: -24px; /* cez celú šírku karty */
+  margin-inline: -40px; /* cez celú šírku karty */
   margin-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.35);
   font-size: 32px;
@@ -501,17 +565,30 @@ h2 {
   );
 }
 
+.home-benefit-card:hover .home-benefit-plus {
+  background: radial-gradient(
+    circle at bottom,
+    rgba(255, 255, 255, 0.09),
+    transparent 100%
+  );
+}
+
 /* ----------------------- */
 /* RESPONZÍVNE ÚPRAVY      */
 /* ----------------------- */
 
+/* Rozšírené karty na desktopoch (kontakt + zvýhodnenia) */
+@media (min-width: 1250px) {
+  .home-contact-card,
+  .home-benefit-grid {
+    margin-inline: -90px;
+    width: calc(100% + 180px);
+  }
+}
+
 @media (max-width: 900px) {
   .home-hero-title {
     font-size: 48px;
-  }
-
-  .home-section {
-    padding-block: 96px;
   }
 }
 
@@ -541,10 +618,6 @@ h2 {
     font-size: 40px;
   }
 
-  .home-section {
-    padding-block: 80px;
-  }
-
   .home-seminar-card {
     grid-template-columns: 1fr;
     row-gap: 12px;
@@ -552,10 +625,11 @@ h2 {
 
   .home-contact-card {
     grid-template-columns: 1fr;
+    justify-self: center;
   }
 
   .home-contact-photo {
-    justify-self: flex-start;
+    justify-self: center;
   }
 }
 
@@ -574,5 +648,9 @@ h2 {
 
   .home-hero-title {
     font-size: 32px;
+  }
+
+  .home-contact-photo {
+    justify-self: center;
   }
 }
