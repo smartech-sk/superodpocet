@@ -1,115 +1,213 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import FAQ from '../components/widgets/FAQ.astro';
-import ProcessSteps from '../components/widgets/ProcessSteps.astro';
-import { getEntry } from 'astro:content';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FAQ from "../components/widgets/FAQ.astro";
+import ProcessSteps from "../components/widgets/ProcessSteps.astro";
+import { getEntry } from "astro:content";
 
-const pageContent = await getEntry('pages', 'vyskum-a-vyvoj');
+const pageContent = await getEntry("pages", "vyskum-a-vyvoj");
 const { Content } = await pageContent.render();
 const { title, description, hero, benefits } = pageContent.data;
 
 const processSteps = [
   {
-    letter: 'A',
-    title: 'Identifikácia činností ako výskum a vývoj',
-    description: 'Určte, ktoré aktivity vo vašej firme spĺňajú podmienky VaV projektu.',
+    letter: "1",
+    title: "Identifikácia činností ako výskum a vývoj",
+    description:
+      "Určte, ktoré aktivity vo vašej firme spĺňajú podmienky VaV projektu.",
   },
   {
-    letter: 'B',
-    title: 'Vypracovanie písomného projektu VaV',
-    description: 'Vytvorte dokumentáciu projektu podľa zákonných požiadaviek.',
+    letter: "2",
+    title: "Vypracovanie písomného projektu VaV",
+    description:
+      "Vytvorte dokumentáciu projektu podľa zákonných požiadaviek.",
   },
   {
-    letter: 'C',
-    title: 'Oddelená evidencia a vyčíslenie daňových výdavkov',
-    description: 'Vedenie osobitnej evidencie nákladov súvisiacich s projektom.',
+    letter: "3",
+    title: "Oddelená evidencia a vyčíslenie daňových výdavkov",
+    description:
+      "Vedenie osobitnej evidencie nákladov súvisiacich s projektom.",
   },
   {
-    letter: 'D',
-    title: 'Kontrola vylúčených položiek a zákazu kumulácie',
-    description: 'Overenie, že náklady nie sú vylúčené a nekombinujú sa s inými odpočtami.',
+    letter: "4",
+    title: "Kontrola vylúčených položiek a zákazu kumulácie",
+    description:
+      "Overenie, že náklady nie sú vylúčené a nekombinujú sa s inými odpočtami.",
   },
   {
-    letter: 'E',
-    title: 'Výpočet superodpočtu na VaV',
-    description: 'Vypočítanie výšky odpočtu podľa platnej legislatívy.',
+    letter: "5",
+    title: "Výpočet superodpočtu na VaV",
+    description:
+      "Vypočítanie výšky odpočtu podľa platnej legislatívy.",
   },
   {
-    letter: 'F',
-    title: 'Uplatnenie superodpočtu v daňovom priznaní',
-    description: 'Zahrnutie odpočtu do daňového priznania.',
+    letter: "6",
+    title: "Uplatnenie superodpočtu v daňovom priznaní",
+    description: "Zahrnutie odpočtu do daňového priznania.",
   },
 ];
+
+const contact = {
+  name: "Ing. Mgr. Martin Gondár",
+  role: "managing partner SmarTech Solutions SK",
+  phone: "+421 904 352 451",
+  email: "gondar@smartech.sk",
+};
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="bg-gradient-to-b from-blue-50 to-white py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          {hero.heading}
-        </h1>
-        <p class="text-xl text-gray-600 mb-8">
-          {hero.text}
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <section class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl">
-        <div class="prose prose-lg max-w-none">
-          <Content />
-        </div>
-
-        {benefits && (
-          <>
-            <h3 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Odpočítať si môžete napríklad:</h3>
-            <ul class="list-disc list-inside space-y-2 text-gray-600 mb-8">
-              {benefits.map((benefit) => (
-                <li>{benefit}</li>
-              ))}
-            </ul>
-          </>
-        )}
-      </div>
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">VÝSKUM A VÝVOJ</p>
+      <h1 class="page-hero-title">
+        {hero.heading}
+      </h1>
     </div>
   </section>
 
-  <section class="bg-gray-50 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Kalkulačka</h2>
-        <div class="bg-white rounded-lg shadow-md p-8">
-          <p class="text-center text-gray-600">
-            Kalkulačka bude implementovaná v ďalšej fáze.
+  <!-- ÚVODNÝ TEXT + KALKULAČKA POD NÍM -->
+  <section class="page-section page-section--light">
+    <div class="container">
+      <div class="home-section-divider"></div>
+      <div class="vav-intro-text">
+        <div class="vav-intro-copy">
+          <Content />
+          <p>
+            Zlepšujete svoje prdukty, produkty, procesy alebo služby?
           </p>
         </div>
       </div>
+
+      <div class="vav-calc-card">
+        <h2 class="vav-calc-heading">Kalkulačka úspory</h2>
+
+        <div class="vav-calc-grid">
+          <div class="vav-calc-field">
+            <label>Obdobie</label>
+            <select class="vav-calc-input">
+              <option>2026</option>
+              <option>2025</option>
+              <option>2024</option>
+              <option>2023</option>
+            </select>
+          </div>
+
+          <div class="vav-calc-field">
+            <label>Náklady výskumu a vývoja</label>
+            <div class="vav-calc-input">10 000 €</div>
+          </div>
+
+          <div class="vav-calc-field">
+            <label>Sadzba dane z príjmu</label>
+            <select class="vav-calc-input">
+              <option>24 %</option>
+              <option>21 %</option>
+              <option>15 %</option>
+            </select>
+          </div>
+
+          <button
+            type="button"
+            class="vav-calc-plus-field"
+            aria-label="Pridať medziročný nárast"
+          >
+            <span>+</span>
+          </button>
+
+          <div class="vav-calc-field vav-calc-field--wide">
+            <label>Náklady výskumu a vývoja 2024</label>
+            <div class="vav-calc-input">5 000 €</div>
+          </div>
+
+          <div class="vav-calc-field vav-calc-field--wide">
+            <label>Náklady výskumu a vývoja 2023</label>
+            <div class="vav-calc-input">2 500 €</div>
+          </div>
+        </div>
+
+        <div class="vav-calc-results">
+          <div class="vav-calc-result-item">
+            <div class="vav-calc-result-value">10&nbsp;000&nbsp;€</div>
+            <div class="vav-calc-result-label">superodpočet 100&nbsp;%</div>
+          </div>
+          <div class="vav-calc-result-item">
+            <div class="vav-calc-result-value">787,5&nbsp;€</div>
+            <div class="vav-calc-result-label">medziročný nárast</div>
+          </div>
+          <div class="vav-calc-result-item">
+            <div class="vav-calc-result-value">2&nbsp;887,5&nbsp;€</div>
+            <div class="vav-calc-result-label">úspora na dani</div>
+          </div>
+        </div>
+
+        <p class="vav-calc-note">
+          Interaktívna kalkulačka bude implementovaná v ďalšej fáze. Hodnoty sú
+          ilustračné.
+        </p>
+      </div>
     </div>
   </section>
 
-  <ProcessSteps steps={processSteps} />
+    <!-- PROCES UPLATNENIA -->
+  <section class="page-section vav-process-section">
+    <div class="container">
+      <div class="home-section-divider"></div>
+      <h2 class="page-section-title">Proces uplatnenia v bodoch</h2>
+      <ProcessSteps steps={processSteps} />
+    </div>
+  </section>
 
-  <FAQ category="vav" />
-
-  <section class="bg-blue-900 text-white py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl font-bold mb-6">
-        Potrebujete poradiť, či vaše projekty spĺňajú podmienky superodpočtu?
+    <!-- FAQ BLOK -->
+  <section class="page-section page-section--light vav-faq-section">
+    <div class="container">
+      <div class="home-section-divider"></div>
+      <h2 class="page-section-title">
+        Najčastejšie otázky k superodpočtu na výskum a vývoj
       </h2>
-      <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-        Pomôžeme vám s celým procesom – od analýzy aktivít až po dokumentáciu pre daňové priznanie.
+      <FAQ category="vav" />
+    </div>
+  </section>
+
+  <!-- KONTAKT (rovnaký štýl ako na homepage) -->
+  <section class="home-section" id="kontakt">
+    <div class="container">
+      <div class="home-section-divider"></div>
+
+      <h2>Získajte odpoveď ihneď od odborníka s praxou.</h2>
+      <p class="home-section-text">
+        Každá firma je iná a preto sa radi pozrieme na konkrétne možnosti
+        uplatnenia superodpočtu u Vás.
       </p>
-      <a
-        href="https://www.smartech.sk"
-        target="_blank"
-        rel="noopener"
-        class="inline-block bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
-      >
-        Kontaktujte nás
-      </a>
+
+      <div class="home-contact-card">
+        <div>
+          <p class="home-contact-name">{contact.name}</p>
+          <p class="home-contact-role">{contact.role}</p>
+          <p class="home-contact-contact">
+            {contact.phone}
+            <br />
+            {contact.email}
+          </p>
+
+          <a
+            href="https://www.smartech.sk"
+            class="home-contact-button"
+            target="_blank"
+            rel="noopener"
+          >
+            Kontaktujte nás
+          </a>
+        </div>
+
+        <div class="home-contact-photo">
+          <img
+            src="/images/MGO.webp"
+            alt="Ing. Mgr. Martin Gondár"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>

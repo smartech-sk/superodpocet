@@ -10,32 +10,32 @@ const { title, description, hero, benefits, warning } = pageContent.data;
 
 const processSteps = [
   {
-    letter: 'A',
+    letter: '1',
     title: 'Overenie, či ide o chránené riešenie',
     description: 'Kontrola, či duševné vlastníctvo spĺňa podmienky pre Patent Box.',
   },
   {
-    letter: 'B',
+    letter: '2',
     title: 'Identifikácia výnosov z predaja',
     description: 'Určenie príjmov z využívania duševného vlastníctva.',
   },
   {
-    letter: 'C',
+    letter: '3',
     title: 'Nastavenie evidencie',
     description: 'Vytvorenie systému na sledovanie príjmov z IP.',
   },
   {
-    letter: 'D',
+    letter: '4',
     title: 'Výpočet úspory',
     description: 'Vypočítanie výšky daňového zvýhodnenia.',
   },
   {
-    letter: 'E',
+    letter: '5',
     title: 'Úprava výdavkov o zodpovedajúcu časť',
     description: 'Správne zaúčtovanie odpočtu.',
   },
   {
-    letter: 'F',
+    letter: '6',
     title: 'Uplatnenie v daňovom priznaní',
     description: 'Zahrnutie Patent Box do daňového priznania.',
   },
@@ -105,7 +105,16 @@ const processSteps = [
 
   <ProcessSteps steps={processSteps} />
 
-  <FAQ category="patent-box" />
+  <!-- FAQ BLOK -->
+  <section class="page-section page-section--light vav-faq-section">
+    <div class="container">
+      <div class="home-section-divider"></div>
+      <h2 class="page-section-title">
+        Najčastejšie otázky k patent boxu
+      </h2>
+      <FAQ category="patent-box" />
+    </div>
+  </section>
 
   <section class="bg-blue-900 text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

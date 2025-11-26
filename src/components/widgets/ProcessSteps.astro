@@ -1,8 +1,8 @@
 ---
 interface Step {
-  letter: string;
+  letter?: string;
   title: string;
-  description: string;
+  description?: string;
 }
 
 interface Props {
@@ -12,37 +12,16 @@ interface Props {
 const { steps } = Astro.props;
 ---
 
-<section class="bg-gray-50 py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">Proces uplatnenia</h2>
-      <div class="space-y-0">
-        {steps.map((step, index) => (
-          <div class="relative flex gap-6 group">
-            {/* Timeline line - show on all except last */}
-            {index < steps.length - 1 && (
-              <div class="absolute left-6 top-12 bottom-0 w-0.5 bg-gradient-to-b from-blue-600 to-blue-400 group-last:hidden" />
-            )}
-
-            {/* Step circle with letter */}
-            <div class="relative z-10 flex-shrink-0">
-              <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg ring-4 ring-white">
-                {step.letter}
-              </div>
-            </div>
-
-            {/* Content */}
-            <div class="flex-1 pb-12 pt-1">
-              <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition">
-                {step.title}
-              </h3>
-              <p class="text-gray-600 leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          </div>
-        ))}
+<div class="process-grid">
+  {steps.map((step, index) => (
+    <div class="process-item">
+      <div class="process-number">
+        {step.letter ?? index + 1}
       </div>
+      <div class="process-underline"></div>
+      <p class="process-text">
+        {step.description ?? step.title}
+      </p>
     </div>
-  </div>
-</section>
+  ))}
+</div>

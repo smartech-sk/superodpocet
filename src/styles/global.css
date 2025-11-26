@@ -76,6 +76,7 @@ h2 {
   font-size: 40px;
   line-height: 1.2;
   font-weight: 700;
+  max-width: 650px;
 }
 
 /* Skip link pre prístupnosť */
@@ -329,8 +330,7 @@ h2 {
 }
 
 .home-section--light {
-  /* pozadie seminárov biele, priehľadnosť cca 50 % */
-  background: linear-gradient(90deg, rgba(16, 68, 125, 0.1), rgba(178, 24, 50, 0.1));
+  background: linear-gradient(135deg, rgba(16, 68, 125, 0.1), rgba(178, 24, 50, 0.1));
 }
 
 .home-section-divider {
@@ -353,7 +353,7 @@ h2 {
 
 .home-section-text {
   margin: 50px 0 50px;
-  max-width: 720px;
+  max-width: 700px;
 }
 
 /* ----------------------- */
@@ -573,6 +573,266 @@ h2 {
   );
 }
 
+/* ---------- VÝSKUM A VÝVOJ – PAGE LAYOUT ---------- */
+
+.page-hero {
+  padding-block: 96px;
+}
+
+.page-hero-label {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-blue);
+  opacity: 50%;
+  margin-bottom: 36px;
+}
+
+.page-hero-title {
+  font-size: 40px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--color-blue);
+  max-width: 820px;
+  margin: 0 0 12px;
+}
+
+.page-hero-text {
+  max-width: 720px;
+  margin: 0;
+  font-size: 20px;
+}
+
+/* univerzálna page sekcia (mimo homepage) */
+.page-section {
+padding-bottom: var(--section-padding-y);
+}
+
+.page-section--light {
+  background: linear-gradient(135deg, rgba(16, 68, 125, 0.1), rgba(178, 24, 50, 0.1));
+}
+
+.page-section-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-blue);
+  margin: 0 0 32px;
+}
+
+/* ---------- VAV INTRO ---------- */
+
+.vav-intro-section {
+  padding-bottom: 80px;
+}
+
+.vav-intro-text {
+  font-size: 18px;
+  max-width: 760px;
+  margin-bottom: 32px;
+}
+
+.vav-intro-copy > *:first-child {
+  margin-top: 0;
+}
+
+/* ---------- VAV KALKULAČKA ---------- */
+
+.vav-calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 30px 0 24px;
+}
+
+.vav-calc-field {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.vav-calc-field label {
+  color: var(--color-blue);
+  border-radius: var(--radius);
+  background-color: rgba(255, 255, 255, 0.4);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 0px 10px 15px;
+
+}
+
+.vav-calc-input {
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: right;
+  color: var(--color-blue);
+  background-color: #fff;
+}
+
+.vav-calc-plus-field {
+  margin-top: 22px;
+  border-radius: var(--radius);
+  border: 1px dashed rgba(178, 24, 50, 0.6);
+  background-color: rgba(178, 24, 50, 0.05);
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--color-red);
+}
+
+.vav-calc-plus-field span {
+  transform: translateY(-1px);
+}
+
+/* spodný riadok – širšie polia */
+.vav-calc-field--wide {
+  grid-column: span 2;
+}
+
+/* výsledkový pruh – gradient ako na designe */
+.vav-calc-results {
+  min-height: 300px;
+  margin-top: 8px;
+  border-radius: var(--radius);
+  padding: 18px 10%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 32px;
+  row-gap: 12px;
+  color: #ffffff;
+  align-items: center;
+  background: linear-gradient(90deg, var(--color-blue), var(--color-red));
+}
+
+.vav-calc-result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vav-calc-result-value {
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.vav-calc-result-label {
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+.vav-calc-note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ---------- PROCES UPLATNENIA V BODOCH ---------- */
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 72px;
+  row-gap: 90px;
+  margin-top: 60px;
+}
+
+.process-item {
+  max-width: 260px;
+}
+
+.process-number {
+  font-size: 60px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--color-blue);
+  margin-left: 5px;
+  margin-bottom: 20px;
+}
+
+.process-underline {
+  width: 44px;
+  height: 2.5px;
+  background: linear-gradient(90deg, var(--color-blue), var(--color-red));
+  margin-bottom: 18px;
+}
+
+.process-text {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--color-blue);
+}
+
+/* ---------- FAQ – Najčastejšie otázky ---------- */
+
+.faq-list {
+  margin-top: 60px;
+  border-top: 1px solid rgba(16, 68, 125, 0.25);
+}
+
+/* jeden riadok FAQ */
+.faq-item {
+  border-bottom: 1px solid rgba(16, 68, 125, 0.25);
+  padding-block: 18px;
+}
+
+/* riadok „plus + otázka“ */
+.faq-summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  list-style: none;
+  padding: 6px 0;
+}
+
+/* plusko naľavo */
+.faq-sign {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 400;
+  color: var(--color-blue);
+  width: 20px;
+  text-align: center;
+  transition: transform 0.15s ease-out;
+}
+
+/* po otvorení otočíme plusko na × */
+.faq-item[open] .faq-sign {
+  transform: rotate(45deg);
+}
+
+/* text otázky */
+.faq-question {
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--color-blue);
+}
+
+/* odpoveď pod otázkou */
+.faq-answer {
+  padding-left: 36px; /* zarovnanie pod text otázky, za pluskom */
+  padding-top: 6px;
+  padding-bottom: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1f2933;
+  max-width: 60rem;
+}
+
+.faq-answer p {
+  margin: 0 0 8px;
+}
+
+.faq-answer p:last-child {
+  margin-bottom: 0;
+}
+
 /* ----------------------- */
 /* RESPONZÍVNE ÚPRAVY      */
 /* ----------------------- */
@@ -631,6 +891,34 @@ h2 {
   .home-contact-photo {
     justify-self: center;
   }
+
+  .page-hero {
+    padding-block: 72px 40px;
+  }
+
+  .page-hero-title {
+    font-size: 32px;
+  }
+
+  .page-hero-text {
+    font-size: 18px;
+  }
+
+  .vav-intro-section {
+    padding-block: 64px;
+  }
+
+  .vav-calc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vav-calc-field--wide {
+    grid-column: span 2;
+  }
+
+  .vav-calc-results {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
@@ -652,5 +940,20 @@ h2 {
 
   .home-contact-photo {
     justify-self: center;
+  }
+}
+
+/* responzívne rozloženie proces krokov */
+@media (max-width: 1024px) {
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 48px;
+    row-gap: 48px;
+  }
+}
+
+@media (max-width: 640px) {
+  .process-grid {
+    grid-template-columns: 1fr;
   }
 }
