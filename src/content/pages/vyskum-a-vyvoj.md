@@ -2,8 +2,8 @@
 title: "Výskum a vývoj"
 description: "Informácie o superodpočte na výskum a vývoj"
 hero:
-  heading: "Premeňte inováciu na konkurenčnú výhodu – aj vo vašom daňovom priznaní"
-  text: "Zavádzate nové riešenia, zdokonaľujete produkty, zefektívňujete výrobu? Aj takéto aktivity môžu spĺňať podmienky na daňový superodpočet výdavkov na výskum a vývoj."
+  heading: "Premeňte inováciu na konkurenčnú výhodu. Aj vo vašom daňovom priznaní."
+  text: "Zlepšujete svoje prdukty, produkty, procesy alebo služby? Ušetrite na dani z príjimu vďaka superodpočtu nákladov na výskum a vývoj. Superodpočet Vám umožní dodatočné odpočítanie nákladov vynaložených na výskumno-vývojové aktivity - napríklad na mzdy vývojárov, materiál, prototypy, softvér či odpisy." 
 benefits:
   - "mzdy vývojárov a technických odborníkov"
   - "nákup materiálu na prototypy"
@@ -11,6 +11,4 @@ benefits:
   - "licencie špecializovaného softvéru (napr. CAD, simulačné nástroje)"
 ---
 
-## Ako to funguje?
-
-Ak máte písomne vypracovaný projekt výskumu a vývoja, môžete si od základu dane odpočítať 100 % výdavkov na VaV za dané obdobie.
+Zlepšujete svoje prdukty, produkty, procesy alebo služby? **Ušetrite**

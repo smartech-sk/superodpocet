@@ -1,80 +1,195 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getEntry } from 'astro:content';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getEntry } from "astro:content";
 
-const pageContent = await getEntry('pages', 'home');
+type Seminar = {
+  date: string;
+  location: string;
+  title: string;
+  link?: string;
+};
+
+type ContactInfo = {
+  name: string;
+  role: string;
+  phone: string;
+  email: string;
+};
+
+const pageContent = await getEntry("pages", "home");
 const { title, description, hero, sections, cards, cta } = pageContent.data;
+
+// text pri seminároch
+const seminarSection = {
+  title: "Chcete využiť superodpočet?",
+  lead: "Zistite počas 30 minút ako na to.",
+  text:
+    "Tematika superodpočtu je odborná a často nejasná – no nemusí to tak byť. Pozývame vás na 30‑ alebo 60‑minútový webinár, na ktorom Vám naši konzultanti vysvetlia:",
+};
+
+const seminars: Seminar[] = [
+  {
+    date: "10. 11. 2025",
+    location: "Bratislava",
+    title: "Meat & Learn",
+    link: "#",
+  },
+  {
+    date: "26. 11. 2025",
+    location: "Bratislava",
+    title:
+      "Odpočet nákladov na výskum a vývoj, jeho uplatnenie v daňovom priznaní za rok 2025 a legislatívny stav platný pre rok 2026",
+    link: "#",
+  },
+  {
+    date: "8. 1. 2026",
+    location: "online",
+    title: "Bezplatný webinár podľa požiadaviek záujemcov",
+    link: "#",
+  },
+];
+
+const contact: ContactInfo = {
+  name: "Ing. Mgr. Martin Gondár",
+  role: "managing partner SmarTech Solutions SK",
+  phone: "+421 904 352 451",
+  email: "gondar@smartech.sk",
+};
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="bg-gradient-to-b from-blue-50 to-white py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          {hero.heading}
-        </h1>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          {hero.text}
-        </p>
-      </div>
+  <!-- HERO: veľké H1 -->
+  <section class="home-hero">
+    <div class="container">
+      <h1 class="home-hero-title">
+        {hero.heading}
+        <br />
+        {hero.text}
+      </h1>
     </div>
-  </div>
+  </section>
 
+    <!-- TYPY DAŇOVÉHO ZVÝHODNENIA (karty z home.md) -->
   {sections && sections[0] && (
-    <section class="py-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">
-            {sections[0].title}
-          </h2>
-          {sections[0].description && (
-            <p class="text-lg text-gray-600">
-              {sections[0].description}
-            </p>
-          )}
-        </div>
+    <section class="home-section home-section--benefits home-section--light">
+      <div class="container">
+        <div class="home-section-divider"></div>
+
+        <h2>{sections[0].title}</h2>
+        {sections[0].description && (
+          <p class="home-section-text">
+            {sections[0].description}
+          </p>
+        )}
 
         {cards && (
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {cards.map((card) => (
-              <a href={card.link} class="group">
-                <div class="bg-white border-2 border-gray-200 rounded-lg p-8 hover:border-blue-500 hover:shadow-lg transition h-full">
-                  <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition">
-                    {card.title}
-                  </h3>
-                  <p class="text-gray-600">
-                    {card.description}
-                  </p>
-                  <div class="mt-6 text-blue-600 font-semibold group-hover:translate-x-2 transition-transform inline-block">
-                    {card.linkText} →
+          <div class="home-benefit-grid">
+            {cards.map((card) => {
+              const link = card.link ?? "";
+
+              const variantClass = link.includes("vyskum-a-vyvoj")
+                ? "home-benefit-card--vav"
+                : link.includes("investicie")
+                ? "home-benefit-card--investicie"
+                : "home-benefit-card--patent";
+
+              return (
+                <a
+                  href={card.link}
+                  class={`home-benefit-card ${variantClass}`}
+                >
+                  <div>
+                    <div class="home-benefit-heading">{card.title}</div>
+                    <p class="home-benefit-text">
+                      {card.description}
+                    </p>
                   </div>
-                </div>
-              </a>
-            ))}
+
+                  <div class="home-benefit-plus">+</div>
+                </a>
+              );
+            })}
           </div>
         )}
       </div>
     </section>
   )}
 
-  {cta && (
-    <section class="bg-blue-900 text-white py-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl font-bold mb-6">
-          {cta.heading}
-        </h2>
-        <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-          {cta.text}
-        </p>
-        <a
-          href={cta.buttonLink}
-          target="_blank"
-          rel="noopener"
-          class="inline-block bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
-        >
-          {cta.buttonText}
-        </a>
+  <!-- SEMINÁRE -->
+  <section class="home-section home-section--light" id="seminare">
+    <div class="container">
+      <div class="home-section-divider"></div>
+
+      <h2>{seminarSection.title}</h2>
+      <p class="home-section-lead">{seminarSection.lead}</p>
+      <p class="home-section-text">{seminarSection.text}</p>
+
+      <div class="home-seminars">
+        {seminars.map((seminar) => (
+          <a href={seminar.link ?? "#"} class="home-seminar-card">
+            <div class="home-seminar-date">
+              <div class="home-seminar-date-day">{seminar.date}</div>
+              <div class="home-seminar-date-place">
+                {seminar.location}
+              </div>
+            </div>
+
+            <div class="home-seminar-content">
+              <h3>{seminar.title}</h3>
+            </div>
+
+            <div class="home-seminar-arrow">›</div>
+          </a>
+        ))}
       </div>
-    </section>
-  )}
+    </div>
+  </section>
+
+  <!-- KONTAKT / CTA -->
+  <section class="home-section" id="kontakt">
+    <div class="container">
+      <div class="home-section-divider"></div>
+
+      <h2>
+        {cta?.heading ?? "Získajte odpoveď ihneď od odborníka s praxou."}
+      </h2>
+      <p class="home-section-text">
+        {cta?.text ??
+          "Každá firma je iná a preto sa radi pozrieme na konkrétne možnosti uplatnenia superodpočtu u vás."}
+      </p>
+
+      <div class="home-contact-card">
+        <div>
+          <p class="home-contact-name">{contact.name}</p>
+          <p class="home-contact-role">{contact.role}</p>
+          <p class="home-contact-contact">
+            {contact.phone}
+            <br />
+            {contact.email}
+          </p>
+
+          {cta && cta.buttonLink && cta.buttonText && (
+            <a
+              href={cta.buttonLink}
+              class="home-contact-button"
+              target="_blank"
+              rel="noopener"
+            >
+              {cta.buttonText}
+            </a>
+          )}
+        </div>
+
+        <div class="home-contact-photo">
+          <img
+            src="/images/MGO.webp"
+            alt="Ing. Mgr. Martin Gondár"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>
