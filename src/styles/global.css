@@ -599,7 +599,7 @@ h2 {
 }
 
 .page-hero-text {
-  max-width: 720px;
+  max-width: 700px;
   margin: 0;
   font-size: 20px;
 }
@@ -628,8 +628,8 @@ padding-bottom: var(--section-padding-y);
 
 .vav-intro-text {
   font-size: 18px;
-  max-width: 760px;
-  margin-bottom: 32px;
+  max-width: 700px;
+  margin-bottom: var(--section-padding-y);
 }
 
 .vav-intro-copy > *:first-child {
