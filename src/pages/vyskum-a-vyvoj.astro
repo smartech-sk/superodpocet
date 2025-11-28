@@ -6,7 +6,7 @@ import { getEntry } from "astro:content";
 
 const pageContent = await getEntry("pages", "vyskum-a-vyvoj");
 const { Content } = await pageContent.render();
-const { title, description, hero, benefits } = pageContent.data;
+const { title, description, hero } = pageContent.data;
 
 const processSteps = [
   {
