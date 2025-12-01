@@ -1,0 +1,249 @@
+<section class="vav-calc-wrapper" data-vav-calc>
+  <div class="vav-calc-grid">
+    <!-- OBDOBIE -->
+    <div class="vav-calc-field">
+      <label for="vav-year">OBDOBIE</label>
+      <select id="vav-year" class="vav-calc-input" data-year>
+        <option value="2024">2024</option>
+        <option value="2025" selected>2025</option>
+        <option value="2026">2026</option>
+      </select>
+    </div>
+
+    <!-- NÁKLADY aktuálny rok -->
+    <div class="vav-calc-field">
+      <label for="vav-current">NÁKLADY VÝSKUMU A VÝVOJA</label>
+      <input
+        id="vav-current"
+        class="vav-calc-input"
+        type="number"
+        min="0"
+        step="10000"
+        value="10000"
+        data-input="current"
+      />
+    </div>
+
+    <!-- SADZBA DANE -->
+    <div class="vav-calc-field">
+      <label for="vav-tax">SADZBA DANE Z PRÍJMU</label>
+      <select id="vav-tax" class="vav-calc-input" data-tax></select>
+    </div>
+
+    <!-- MEDZIROČNÝ NÁRAST – toggle -->
+    <div class="vav-calc-field">
+      <label>MEDZIROČNÝ NÁRAST</label>
+      <div class="vav-calc-plus-field" data-toggle-yoy>
+        <span>+</span>
+      </div>
+    </div>
+
+    <!-- NÁKLADY 2024 -->
+    <div class="vav-calc-field vav-calc-field--wide" data-yoy-row>
+      <label for="vav-2024">NÁKLADY VÝSKUMU A VÝVOJA OBDOBIE MINULÉ</label>
+      <input
+        id="vav-2024"
+        class="vav-calc-input"
+        type="number"
+        min="0"
+        step="10000"
+        value="5000"
+        data-input="y2024"
+      />
+    </div>
+
+    <!-- NÁKLADY 2023 -->
+    <div class="vav-calc-field vav-calc-field--wide" data-yoy-row>
+      <label for="vav-2023">NÁKLADY VÝSKUMU A VÝVOJA OBDOBIE PREDMINULÉ</label>
+      <input
+        id="vav-2023"
+        class="vav-calc-input"
+        type="number"
+        min="0"
+        step="10000"
+        value="2500"
+        data-input="y2023"
+      />
+    </div>
+  </div>
+
+  <!-- výsledky -->
+  <div class="vav-calc-results">
+    <div class="vav-calc-result-item">
+      <div class="vav-calc-result-value" data-output="super">0 €</div>
+      <div class="vav-calc-result-label">superodpočet od základu dane</div>
+    </div>
+    <div class="vav-calc-result-item">
+      <div class="vav-calc-result-value" data-output="yoy">0 €</div>
+      <div class="vav-calc-result-label">medziročný nárast</div>
+    </div>
+    <div class="vav-calc-result-item">
+      <div class="vav-calc-result-value" data-output="total">0 €</div>
+      <div class="vav-calc-result-label">úspora na dani</div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+  const STEP = 10000;
+
+  type TaxOption = { value: number; label: string };
+
+  const TAX_DEFAULT: TaxOption[] = [
+    { value: 10, label: "10 % (výnosy do 100 tis. €)" },
+    { value: 21, label: "21 % (výnosy do 500 tis. €)" },
+    { value: 24, label: "24 % (výnosy nad 5 mil. €)" },
+  ];
+
+  const TAX_2024: TaxOption[] = [
+    { value: 15, label: "15 % (výnosy do 60 tis. €)" },
+    { value: 21, label: "21 % (výnosy nad 60 tis. €)" },
+  ];
+
+  function getTaxOptions(year: number): TaxOption[] {
+    return year === 2024 ? TAX_2024 : TAX_DEFAULT;
+  }
+
+  function formatCurrency(value: number): string {
+    const rounded = Math.round(value); // zaokrúhlenie na celé číslo
+    const nbsp = "\u00A0";
+    return (
+        rounded.toLocaleString("sk-SK", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+        }) + nbsp + "€"
+    );
+  }
+
+  function parseInput(el: HTMLInputElement | null): number {
+    if (!el) return 0;
+    const raw = el.value.replace(",", ".");
+    const v = parseFloat(raw);
+    return !isFinite(v) || v < 0 ? 0 : v;
+  }
+
+  function initCalculator(root: HTMLElement) {
+    const yearSelect = root.querySelector<HTMLSelectElement>("[data-year]");
+    const taxSelect = root.querySelector<HTMLSelectElement>("[data-tax]");
+
+    const inputCurrent =
+      root.querySelector<HTMLInputElement>('[data-input="current"]');
+    const input2024 =
+      root.querySelector<HTMLInputElement>('[data-input="y2024"]');
+    const input2023 =
+      root.querySelector<HTMLInputElement>('[data-input="y2023"]');
+
+    const yoyRows = root.querySelectorAll<HTMLElement>("[data-yoy-row]");
+    const toggleYoyBtn =
+      root.querySelector<HTMLDivElement>("[data-toggle-yoy]");
+
+    const outputSuper =
+      root.querySelector<HTMLElement>('[data-output="super"]');
+    const outputYoy = root.querySelector<HTMLElement>('[data-output="yoy"]');
+    const outputTotal =
+      root.querySelector<HTMLElement>('[data-output="total"]');
+
+    if (
+      !yearSelect ||
+      !taxSelect ||
+      !inputCurrent ||
+      !outputSuper ||
+      !outputYoy ||
+      !outputTotal
+    ) {
+      return;
+    }
+
+    [inputCurrent, input2024, input2023].forEach((el) => {
+      if (!el) return;
+      el.step = String(STEP);
+      el.min = "0";
+    });
+
+    let yoyEnabled = false;
+
+    function renderTaxOptions() {
+      const year = Number(yearSelect.value);
+      const options = getTaxOptions(year);
+      const currentValue = Number(taxSelect.value);
+
+      taxSelect.innerHTML = "";
+      options.forEach((opt, index) => {
+        const o = document.createElement("option");
+        o.value = String(opt.value);
+        o.textContent = opt.label;
+        if (opt.value === currentValue || (!currentValue && index === 0)) {
+          o.selected = true;
+        }
+        taxSelect.appendChild(o);
+      });
+    }
+
+    function recalculate() {
+      const taxRate = Number(taxSelect.value) || 0;
+      const rate = taxRate / 100;
+
+      const current = parseInput(inputCurrent);
+      const y2024 = parseInput(input2024);
+      const y2023 = parseInput(input2023);
+
+      const baseSuper = current;
+
+      let yoyDeduction = 0;
+      if (yoyEnabled) {
+        const inc1 = current - y2024;
+        const inc2 = y2024 - y2023;
+        const avg = (inc1 + inc2) / 2;
+        if (avg > 0) {
+          yoyDeduction = avg;
+        }
+      }
+
+      const baseSaving = baseSuper * rate;
+      const yoySaving = yoyDeduction * rate;
+      const total = baseSaving + yoySaving;
+
+      outputSuper.textContent = formatCurrency(baseSuper);
+      outputYoy.textContent = formatCurrency(yoySaving);
+      outputTotal.textContent = formatCurrency(total);
+    }
+
+    // init
+    renderTaxOptions();
+    recalculate();
+
+    // eventy
+    yearSelect.addEventListener("change", () => {
+      renderTaxOptions();
+      recalculate();
+    });
+
+    taxSelect.addEventListener("change", recalculate);
+
+    [inputCurrent, input2024, input2023].forEach((el) => {
+      el?.addEventListener("input", recalculate);
+    });
+
+    toggleYoyBtn?.addEventListener("click", () => {
+      yoyEnabled = !yoyEnabled;
+      yoyRows.forEach((row) => {
+        row.style.display = yoyEnabled ? "" : "none";
+      });
+      const span = toggleYoyBtn.querySelector("span");
+      if (span) span.textContent = yoyEnabled ? "−" : "+";
+      recalculate();
+    });
+
+    // na začiatku medziročný nárast skryjeme
+    yoyRows.forEach((row) => {
+      row.style.display = "none";
+    });
+  }
+
+  if (typeof document !== "undefined") {
+    document
+      .querySelectorAll<HTMLElement>("[data-vav-calc]")
+      .forEach(initCalculator);
+  }
+</script>
