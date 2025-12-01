@@ -954,6 +954,11 @@ padding-bottom: var(--section-padding-y);
   .home-contact-photo {
     justify-self: center;
   }
+  
+  .home-contact-card {
+    margin: auto;
+    padding: 45px 60px 45px 60px;
+  }
 }
 
 /* responzívne rozloženie proces krokov */
