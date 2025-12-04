@@ -27,7 +27,7 @@
       <label for="pb-activated">AKTIVOVANÉ NÁKLADY NA VÝVOJ SW *</label>
       <input
         id="pb-activated"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="1000"
@@ -41,7 +41,7 @@
       <label for="pb-total-income">CELKOVÉ OSLOBODZOVANÉ PRÍJMY *</label>
       <input
         id="pb-total-income"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="1000"
@@ -63,7 +63,7 @@
       <label for="pb-intangibles">NÁKLADY NA NEHMOTNÉ VÝSLEDKY *</label>
       <input
         id="pb-intangibles"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="1000"
@@ -77,7 +77,7 @@
       <label for="pb-nonactivated">NEAKTIVOVANÉ NÁKLADY NA VÝVOJ</label>
       <input
         id="pb-nonactivated"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="1000"
@@ -166,6 +166,69 @@
       return v;
     }
 
+    // ===== NOVÉ: overlay formátovanie číselných vstupov na "200 000 €" =====
+    var moneyOverlayMap = new WeakMap();
+
+    function updateMoneyOverlay(input) {
+      var overlay = moneyOverlayMap.get(input);
+      if (!overlay) return;
+
+      var raw = input.value.trim();
+      if (!raw) {
+        overlay.textContent = "";
+        return;
+      }
+
+      var value = parseInput(input);
+      overlay.textContent = formatCurrency(value);
+    }
+
+    function attachMoneyOverlay(inputs) {
+      inputs.forEach(function (input) {
+        if (!input) return;
+        var parent = input.parentElement;
+        if (!parent) return;
+
+        // wrapper okolo inputu
+        var wrapper = document.createElement("div");
+        wrapper.style.position = "relative";
+        wrapper.style.display = "block";
+        wrapper.style.width = "100%";
+
+        parent.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+
+        // input – schováme text, necháme caret + šípky (step)
+        input.style.color = "transparent";
+        input.style.caretColor = "var(--color-blue)";
+        input.style.width = "100%";
+
+        // overlay, ktorý zobrazuje formátované číslo
+        var overlay = document.createElement("div");
+        overlay.style.position = "absolute";
+        overlay.style.left = "0";
+        overlay.style.top = "0";
+        overlay.style.right = "0";
+        overlay.style.bottom = "0";
+        overlay.style.display = "flex";
+        overlay.style.alignItems = "center";
+        overlay.style.justifyContent = "flex-start";
+        overlay.style.padding = "8px 15px";
+        overlay.style.fontSize = "18px";
+        overlay.style.fontWeight = "700";
+        overlay.style.pointerEvents = "none";
+        overlay.style.color = "var(--color-blue)";
+        overlay.style.textAlign = "left";
+
+        wrapper.appendChild(overlay);
+        moneyOverlayMap.set(input, overlay);
+
+        // prvotné zobrazenie
+        updateMoneyOverlay(input);
+      });
+    }
+    // ===== KONIEC NOVÉHO OVERLAY FORMÁTOVANIA =====
+
     function clamp(v, min, max) {
       if (v < min) return min;
       if (v > max) return max;
@@ -230,6 +293,14 @@
 
       renderTaxOptions(taxSelect);
 
+      // pridať overlay formátovanie pre € vstupy
+      attachMoneyOverlay([
+        activatedInput,
+        totalIncomeInput,
+        intangiblesInput,
+        nonActivatedInput,
+      ]);
+
       var coeffEnabled = false;
 
       function recalc() {
@@ -268,6 +339,9 @@
 
         // C13: Celková daňová úľava = (C7 - C4) * C12 * C3
         var taxRelief = (totalIncome - activated) * totalExemptRate * taxRate;
+        if (taxRelief <= 0) {
+          taxRelief = 0;
+        }
 
         outExemptIncome.textContent = formatCurrency(exemptIncome);
         outExemptRate.textContent = formatPercent(totalExemptRate);
@@ -275,11 +349,28 @@
       }
 
       taxSelect.addEventListener("change", recalc);
-      activatedInput.addEventListener("input", recalc);
-      totalIncomeInput.addEventListener("input", recalc);
-      if (intangiblesInput) intangiblesInput.addEventListener("input", recalc);
+
+      activatedInput.addEventListener("input", function () {
+        updateMoneyOverlay(activatedInput);
+        recalc();
+      });
+
+      totalIncomeInput.addEventListener("input", function () {
+        updateMoneyOverlay(totalIncomeInput);
+        recalc();
+      });
+
+      if (intangiblesInput)
+        intangiblesInput.addEventListener("input", function () {
+          updateMoneyOverlay(intangiblesInput);
+          recalc();
+        });
+
       if (nonActivatedInput)
-        nonActivatedInput.addEventListener("input", recalc);
+        nonActivatedInput.addEventListener("input", function () {
+          updateMoneyOverlay(nonActivatedInput);
+          recalc();
+        });
 
       if (coeffToggle) {
         coeffToggle.addEventListener("click", function () {
@@ -296,7 +387,6 @@
       // zareaguj aj na zmenu roku (aktuálne len 2025, ale pre budúcnosť)
       if (yearSelect) {
         yearSelect.addEventListener("change", function () {
-          // zatiaľ žiadna špecifická logika podľa roku
           recalc();
         });
       }
@@ -310,3 +400,4 @@
     }
   })();
 </script>
+
