@@ -2,7 +2,7 @@
 title: "Domov"
 description: "Premeňte inováciu na konkurenčnú výhodu aj vo vašom daňovom priznaní."
 hero:
-  heading: "Znížte si daň z príjmov pomocou daňových úľav na výskum a vývoj, Priemysel 4.0 a patent box."
+  heading: "Ušetrite dane pomocou superodpočtu na výskum a vývoj, investície a patent boxu."
   text: "Legálne a bez zbytočného rizika."
 sections:
   - title: "Aký typ daňového zvýhodnenia Vás zaujíma?"
@@ -12,13 +12,13 @@ cards:
     description: "Pre firmy, ktoré inovujú, vyvíjajú nové produkty, procesy alebo technológie."
     link: "/vyskum-a-vyvoj"
     linkText: "Zistiť viac"
-  - title: "Superodpočet na investície do Priemyslu 4.0"
-    description: "Pre podniky, ktoré investujú do moderných strojov, digitalizácie alebo automatizácie."
-    link: "/investicie"
-    linkText: "Zistiť viac"
   - title: "Patent Box"
     description: "Pre spoločnosti, ktoré predávajú práva na použitie svojich nehmotných aktív – patenty, softvér, know-how."
     link: "/patent-box"
+    linkText: "Zistiť viac"
+  - title: "Superodpočet na investície do Priemyslu 4.0"
+    description: "Pre podniky, ktoré investujú do moderných strojov, digitalizácie alebo automatizácie."
+    link: "/investicie"
     linkText: "Zistiť viac"
 cta:
   heading: "Získajte odpoveď ihneď od odborníka s praxou."

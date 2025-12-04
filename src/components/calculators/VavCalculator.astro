@@ -40,7 +40,7 @@
 
     <!-- NÁKLADY 2024 -->
     <div class="vav-calc-field vav-calc-field--wide" data-yoy-row>
-      <label for="vav-2024">NÁKLADY VÝSKUMU A VÝVOJA OBDOBIE MINULÉ</label>
+      <label for="vav-2024">NÁKLADY VÝSKUMU A VÝVOJA - OBDOBIE MINULÉ</label>
       <input
         id="vav-2024"
         class="vav-calc-input"
@@ -54,7 +54,7 @@
 
     <!-- NÁKLADY 2023 -->
     <div class="vav-calc-field vav-calc-field--wide" data-yoy-row>
-      <label for="vav-2023">NÁKLADY VÝSKUMU A VÝVOJA OBDOBIE PREDMINULÉ</label>
+      <label for="vav-2023">NÁKLADY VÝSKUMU A VÝVOJA - OBDOBIE PREDMINULÉ</label>
       <input
         id="vav-2023"
         class="vav-calc-input"
@@ -173,7 +173,8 @@
         const o = document.createElement("option");
         o.value = String(opt.value);
         o.textContent = opt.label;
-        if (opt.value === currentValue || (!currentValue && index === 0)) {
+        if (opt.value === currentValue || (!currentValue && index === 1)) {
+          // default 21 %
           o.selected = true;
         }
         taxSelect.appendChild(o);

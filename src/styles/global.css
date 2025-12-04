@@ -344,6 +344,7 @@ h2 {
 .home-section-divider--full {
   width: 100%;
   margin-bottom: 0;
+  border-radius: initial;
   height: 8px;
 }
 
@@ -701,6 +702,10 @@ padding-bottom: var(--section-padding-y);
 /* spodný riadok – širšie polia */
 .vav-calc-field--wide {
   grid-column: span 2;
+}
+
+.vav-calc-coef-field--wide {
+  grid-column: span 2 ;
 }
 
 /* výsledkový pruh – gradient ako na designe */
