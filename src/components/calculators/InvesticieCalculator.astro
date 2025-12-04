@@ -1,0 +1,267 @@
+---
+/**
+ * Kalkulačka odpočtu výdavkov (nákladov) na investície do Priemyslu 4.0
+ * podľa § 30e zákona o dani z príjmov (superodpočet investícií).
+ *
+ * Logika:
+ *  - zadaná priemerná hodnota investícií za posledné 3 zdaňovacie obdobia,
+ *  - zadaná plánovaná výška investičného plánu (spolu),
+ *  - z toho sa vypočíta preinvestovaná priemerná hodnota v %,
+ *  - podľa tabuľky § 30e (700–1399,99 % vs. ≥ 1400 % a pásma 1–20 / 20–50 / 50+ mil. €)
+ *    sa určí sadzba odpočtu (15–55 % z daňového odpisu),
+ *  - z daňového odpisu sa vypočíta samotný odpočet a voliteľne úspora na dani.
+ */
+---
+
+<section class="vav-calc-wrapper" data-i40-calc>
+  <div class="vav-calc-grid">
+    <!-- PRIEMERNÁ HODNOTA INVESTÍCIÍ -->
+    <div class="vav-calc-field">
+      <label for="i40-avg">PRIEMERNÁ HODNOTA INVESTÍCIÍ (POSLEDNÉ 3 ROKY)</label>
+      <input
+        id="i40-avg"
+        class="vav-calc-input"
+        type="number"
+        min="0"
+        step="100000"
+        value="1000000"
+        data-input="avg"
+      />
+    </div>
+
+    <!-- PLÁNOVANÁ VÝŠKA INVESTIČNÉHO PLÁNU -->
+    <div class="vav-calc-field">
+      <label for="i40-plan">PLÁNOVANÁ VÝŠKA INVESTIČNÉHO PLÁNU (SPOLU)</label>
+      <input
+        id="i40-plan"
+        class="vav-calc-input"
+        type="number"
+        min="0"
+        step="100000"
+        value="7000000"
+        data-input="plan"
+      />
+    </div>
+
+    <!-- DAŇOVÉ ODPISY Z INVESTÍCIE -->
+    <div class="vav-calc-field">
+      <label for="i40-depr">DAŇOVÉ ODPISY OPRÁVNENEJ INVESTÍCIE ZA ZDAŇOVACIE OBDOBIE</label>
+      <input
+        id="i40-depr"
+        class="vav-calc-input"
+        type="number"
+        min="0"
+        step="10000"
+        value="200000"
+        data-input="depreciation"
+      />
+    </div>
+
+    <!-- SADZBA DANE Z PRÍJMOV -->
+    <div class="vav-calc-field">
+      <label for="i40-taxrate">SADZBA DANE Z PRIJÍMU (%)</label>
+      <input
+        id="i40-taxrate"
+        class="vav-calc-input"
+        type="number"
+        min="0"
+        max="99"
+        step="1"
+        value="21"
+        data-input="taxRate"
+      />
+    </div>
+  </div>
+
+  <!-- výsledky -->
+  <div class="vav-calc-results">
+    <div class="vav-calc-result-item">
+      <div class="vav-calc-result-value" data-output="deduction">0 €</div>
+      <div class="vav-calc-result-label">
+        dodatočný odpočet z daňového odpisu (Priemysel 4.0)
+      </div>
+    </div>
+    <div class="vav-calc-result-item">
+      <div class="vav-calc-result-value" data-output="tax-saving">0 €</div>
+      <div class="vav-calc-result-label">odhadovaná úspora na dani</div>
+    </div>
+    <div class="vav-calc-result-item">
+      <div class="vav-calc-result-value" data-output="rate">0 %</div>
+      <div class="vav-calc-result-label">sadzba odpočtu podľa § 30e ZDP</div>
+    </div>
+  </div>
+
+  <p class="vav-calc-note" data-output="info-note">
+    Vyplňte priemernú hodnotu investícií za posledné tri roky, plánovanú výšku
+    investičného plánu a ročný daňový odpis majetku spĺňajúceho definíciu
+    Priemyslu 4.0 podľa § 30e zákona o dani z príjmov. Kalkulačka vypočíta
+    orientačný odpočet a úsporu na dani.
+  </p>
+</section>
+
+<script>
+  (function () {
+    function formatCurrency(value) {
+      if (!isFinite(value)) value = 0;
+      var rounded = Math.round(value);
+      var nbsp = "\u00A0"; // nedeliteľná medzera
+      return (
+        rounded.toLocaleString("sk-SK", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        nbsp +
+        "€"
+      );
+    }
+
+    function formatPercent(value) {
+      if (!isFinite(value)) value = 0;
+      var rounded = Math.round(value * 10) / 10; // 1 desatinné miesto
+      return (
+        rounded.toLocaleString("sk-SK", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 1,
+        }) + " %"
+      );
+    }
+
+    function parseInput(el) {
+      if (!el) return 0;
+      var raw = el.value.replace(/\s/g, "").replace(",", ".");
+      var v = parseFloat(raw);
+      if (!isFinite(v) || isNaN(v) || v < 0) return 0;
+      return v;
+    }
+
+    // Výpočet sadzby odpočtu podľa tabuľky v § 30e ZDP:
+    // - preinvestovaná priemerná hodnota investícií (min. 700 %),
+    // - hodnota plánovanej výšky preinvestovania priemernej hodnoty investícií (1–20 / 20–50 / 50+ mil. €).
+    function getDeductionDetails(avgInvest, planInvest) {
+      var result = {
+        rate: 0,
+        bandLabel: "",
+        ratioTier: "",
+        ratio: 0,
+        valid: false,
+      };
+
+      if (avgInvest <= 0 || planInvest < 1000000) {
+        return result;
+      }
+
+      var ratio = (planInvest / avgInvest) * 100; // v %
+      result.ratio = ratio;
+
+      if (ratio < 700) {
+        return result;
+      }
+
+      var planMil = planInvest / 1000000;
+      var bandLabel = "";
+
+      if (planMil > 1 && planMil <= 20) {
+        bandLabel = "viac ako 1 mil. € do 20 mil. €";
+      } else if (planMil > 20 && planMil <= 50) {
+        bandLabel = "viac ako 20 mil. € do 50 mil. €";
+      } else if (planMil > 50) {
+        bandLabel = "viac ako 50 mil. €";
+      } else {
+        return result; // plán < = 1 mil. € – podmienka nesplnená
+      }
+
+      var ratioTier =
+        ratio >= 700 && ratio < 1400 ? "700–1 399,99 %" : "1 400 % a viac";
+      var rate = 0;
+
+      if (ratioTier === "700–1 399,99 %") {
+        if (planMil > 1 && planMil <= 20) rate = 15;
+        else if (planMil > 20 && planMil <= 50) rate = 25;
+        else if (planMil > 50) rate = 50;
+      } else {
+        if (planMil > 1 && planMil <= 20) rate = 20;
+        else if (planMil > 20 && planMil <= 50) rate = 30;
+        else if (planMil > 50) rate = 55;
+      }
+
+      result.rate = rate;
+      result.bandLabel = bandLabel;
+      result.ratioTier = ratioTier;
+      result.valid = rate > 0;
+      return result;
+    }
+
+    function initCalculator(root) {
+      var avgInput = root.querySelector('input[data-input="avg"]');
+      var planInput = root.querySelector('input[data-input="plan"]');
+      var depInput = root.querySelector('input[data-input="depreciation"]');
+      var taxRateInput = root.querySelector('input[data-input="taxRate"]');
+
+      var outDeduction = root.querySelector('[data-output="deduction"]');
+      var outTaxSaving = root.querySelector('[data-output="tax-saving"]');
+      var outRate = root.querySelector('[data-output="rate"]');
+      var outInfo = root.querySelector('[data-output="info-note"]');
+
+      if (
+        !avgInput ||
+        !planInput ||
+        !depInput ||
+        !outDeduction ||
+        !outTaxSaving ||
+        !outRate ||
+        !outInfo
+      ) {
+        return;
+      }
+
+      function recalc() {
+        var avg = parseInput(avgInput);
+        var plan = parseInput(planInput);
+        var dep = parseInput(depInput);
+        var taxRate = taxRateInput ? parseInput(taxRateInput) : 0;
+
+        var details = getDeductionDetails(avg, plan);
+        var deduction = 0;
+        var taxSaving = 0;
+        var infoText = "";
+
+        if (details.valid) {
+          deduction = (dep * details.rate) / 100;
+          taxSaving = deduction * (taxRate / 100);
+
+          infoText =
+            "Preinvestovaná priemerná hodnota investícií: " +
+            formatPercent(details.ratio) +
+            ". Pásmo investičného plánu: " +
+            details.bandLabel +
+            ". Použitá sadzba odpočtu: " +
+            details.rate.toString() +
+            " % z daňového odpisu podľa § 30e zákona o dani z príjmov.";
+        } else {
+          infoText =
+            "Podmienky na uplatnenie odpočtu podľa § 30e ZDP nie sú splnené. " +
+            "Celková plánovaná výška investícií musí byť aspoň 1 mil. € " +
+            "a zároveň preinvestovaná priemerná hodnota investícií musí dosiahnuť " +
+            "minimálne 700 % priemernej hodnoty investícií za posledné tri zdaňovacie obdobia.";
+        }
+
+        outDeduction.textContent = formatCurrency(deduction);
+        outTaxSaving.textContent = formatCurrency(taxSaving);
+        outRate.textContent = details.rate.toString() + "\u00A0%";
+        outInfo.textContent = infoText;
+      }
+
+      [avgInput, planInput, depInput, taxRateInput].forEach(function (el) {
+        if (!el) return;
+        el.addEventListener("input", recalc);
+      });
+
+      recalc();
+    }
+
+    if (typeof document !== "undefined") {
+      var roots = document.querySelectorAll("[data-i40-calc]");
+      roots.forEach(initCalculator);
+    }
+  })();
+</script>

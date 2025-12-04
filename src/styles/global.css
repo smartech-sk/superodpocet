@@ -344,6 +344,7 @@ h2 {
 .home-section-divider--full {
   width: 100%;
   margin-bottom: 0;
+  height: 8px;
 }
 
 .home-section-lead {
@@ -370,9 +371,8 @@ h2 {
   display: grid;
   grid-template-columns: minmax(0, 220px) minmax(0, 1fr) auto;
   align-items: center;
-  column-gap: 45px;
-  padding-right: 35px;
   border-radius: var(--radius);
+  overflow: hidden;
 
   /* biele pozadie, mierna priehľadnosť */
   background-color: rgba(255, 255, 255, 0.5);
@@ -389,33 +389,37 @@ h2 {
   /* modré pozadie za dátumom – 10 % priehľadnosť */
   background-color: rgba(16, 68, 125, 0.1);
   border-radius: var(--radius);
-  padding: 35px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-self: stretch;
+  padding: 35px;
   font-size: 18px;
   color: var(--color-blue);
 }
 
 .home-seminar-date-place {
-    color: var(--color-red);
-}
-
-.home-seminar-date-place {
+  color: var(--color-red);
   margin-top: 4px;
 }
 
 .home-seminar-content h3 {
   font-size: 24px; /* názvy seminárov 24px */
-  margin: 0 0 4px;
   font-weight: 700;
+  padding: 25px 45px 25px 45px;
 }
 
 .home-seminar-arrow {
   align-self: center;
   font-size: 50px;
   opacity: 0.6;
+  padding: 0 35px 0 35px;
+  transition: transform 0.15s ease-out;
+}
+
+.home-seminar-card:hover .home-seminar-arrow {
+  transform: translateX(5px);
 }
 
 /* ----------------------- */
@@ -643,6 +647,7 @@ padding-bottom: var(--section-padding-y);
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   margin: 30px 0 24px;
+  align-items: stretch;
 }
 
 .vav-calc-field {
@@ -653,36 +658,40 @@ padding-bottom: var(--section-padding-y);
 
 .vav-calc-field label {
   color: var(--color-blue);
-  border-radius: var(--radius);
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
   background-color: rgba(255, 255, 255, 0.4);
   font-size: 15px;
   font-weight: 700;
-  padding: 10px 0px 10px 15px;
-
+  padding: 10px 15px 10px 15px;
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center; 
 }
 
 .vav-calc-input {
-  border-radius: var(--radius);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
   padding: 8px 10px;
   font-size: 18px;
   font-weight: 700;
-  text-align: right;
+  text-align: left;
   color: var(--color-blue);
   background-color: #fff;
 }
 
 .vav-calc-plus-field {
-  margin-top: 22px;
-  border-radius: var(--radius);
-  border: 1px dashed rgba(178, 24, 50, 0.6);
-  background-color: rgba(178, 24, 50, 0.05);
-  cursor: default;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  background-color: rgba(16, 68, 125, 0.1);
+  padding: 8px 10px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 26px;
   line-height: 1;
-  color: var(--color-red);
+  color: var(--color-blue);
 }
 
 .vav-calc-plus-field span {
@@ -718,6 +727,7 @@ padding-bottom: var(--section-padding-y);
 .vav-calc-result-value {
   font-size: 50px;
   font-weight: 700;
+  margin-right: auto;
 }
 
 .vav-calc-result-label {
@@ -880,8 +890,17 @@ padding-bottom: var(--section-padding-y);
 
   .home-seminar-card {
     grid-template-columns: 1fr;
-    row-gap: 12px;
+    justify-items: center;
   }
+
+  .home-seminar-date {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .home-seminar-content h3 {
+  padding: 25px 45px 0 45px;
+}
 
   .home-contact-card {
     grid-template-columns: 1fr;
@@ -940,6 +959,11 @@ padding-bottom: var(--section-padding-y);
 
   .home-contact-photo {
     justify-self: center;
+  }
+  
+  .home-contact-card {
+    margin: auto;
+    padding: 45px 60px 45px 60px;
   }
 }
 

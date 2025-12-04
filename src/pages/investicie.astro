@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import InvesticieCalculator from '../components/calculators/InvesticieCalculator.astro';
 import FAQ from '../components/widgets/FAQ.astro';
 import ProcessSteps from '../components/widgets/ProcessSteps.astro';
 import { getEntry } from 'astro:content';
@@ -10,116 +11,134 @@ const { title, description, hero, benefits, warning } = pageContent.data;
 
 const processSteps = [
   {
-    letter: 'A',
+    letter: '1',
     title: 'Overenie, že ide o investíciu podľa § 30e',
     description: 'Kontrola, či investícia spadá pod podporované technológie Priemyslu 4.0.',
   },
   {
-    letter: 'B',
+    letter: '2',
     title: 'Vypracovanie investičného plánu',
     description: 'Príprava dokumentácie k plánovanej investícii.',
   },
   {
-    letter: 'C',
+    letter: '3',
     title: 'Aktivácia investície',
     description: 'Zaradenie majetku do užívania.',
   },
   {
-    letter: 'D',
+    letter: '4',
     title: 'Daňový výpočet a evidencia',
     description: 'Vypočítanie výšky odpočtu a vedenie evidencie.',
   },
   {
-    letter: 'E',
+    letter: '5',
     title: 'Kontrola splnenia investičného limitu',
     description: 'Overenie podmienok pre uplatnenie odpočtu.',
   },
   {
-    letter: 'F',
+    letter: '6',
     title: 'Uplatnenie superodpočtu v daňovom priznaní',
     description: 'Zahrnutie odpočtu do daňového priznania.',
   },
 ];
+
+const contact = {
+  name: "Ing. Mgr. Martin Gondár",
+  role: "managing partner SmarTech Solutions SK",
+  phone: "+421 904 352 451",
+  email: "gondar@smartech.sk",
+};
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="bg-gradient-to-b from-blue-50 to-white py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          {hero.heading}
-        </h1>
-        <p class="text-xl text-gray-600 mb-8">
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">INVESTÍCIE DO PRIEMYSLU 4.0</p>
+      <h1 class="page-hero-title">
+        {hero.heading}
+      </h1>
+    </div>
+  </section>
+  
+  <!-- ÚVODNÝ TEXT + KALKULAČKA POD NÍM -->
+  <section class="page-section page-section--light">
+    <div class="container">
+      <div class="home-section-divider"></div>
+      <div class="vav-intro-text">
+        <div class="vav-intro-copy">
           {hero.text}
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <section class="py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl">
-        <div class="prose prose-lg max-w-none mb-8">
-          <Content />
         </div>
-
-        {benefits && (
-          <ul class="space-y-4 mb-8">
-            {benefits.map((benefit) => (
-              <li class="flex gap-3">
-                <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <span class="text-gray-600" set:html={benefit} />
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {warning && (
-          <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
-            <p class="text-amber-800">
-              <strong>Pozor:</strong> {warning}
-            </p>
-          </div>
-        )}
       </div>
+      
+      <div class="vav-calc-card">
+        <h2 class="vav-calc-heading">Kalkulačka úspory</h2>
+        <InvesticieCalculator />
+      </div>
+
     </div>
   </section>
 
-  <section class="bg-gray-50 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Kalkulačka</h2>
-        <div class="bg-white rounded-lg shadow-md p-8">
-          <p class="text-center text-gray-600">
-            Kalkulačka bude implementovaná v ďalšej fáze.
-          </p>
-        </div>
-      </div>
+  <!-- PROCES UPLATNENIA -->
+  <section class="page-section vav-process-section">
+    <div class="container">
+      <div class="home-section-divider"></div>
+      <h2 class="page-section-title">Proces uplatnenia v bodoch</h2>
+      <ProcessSteps steps={processSteps} />
     </div>
   </section>
 
-  <ProcessSteps steps={processSteps} />
-
-  <FAQ category="investicie" />
-
-  <section class="bg-blue-900 text-white py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl font-bold mb-6">
-        Máte investíciu, ktorá by mohla spadať pod Priemysel 4.0?
+  <!-- FAQ BLOK -->
+  <section class="page-section page-section--light vav-faq-section">
+    <div class="container">
+      <div class="home-section-divider"></div>
+      <h2 class="page-section-title">
+        Najčastejšie otázky k investíciam do Priemyslu 4.0
       </h2>
-      <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-        Neváhajte a poraďte sa s nami.
+      <FAQ category="investicie" />
+    </div>
+  </section>
+
+  <!-- KONTAKT (rovnaký štýl ako na homepage) -->
+  <section class="home-section" id="kontakt">
+    <div class="container">
+      <div class="home-section-divider"></div>
+
+      <h2>Získajte odpoveď ihneď od odborníka s praxou.</h2>
+      <p class="home-section-text">
+        Každá firma je iná a preto sa radi pozrieme na konkrétne možnosti
+        uplatnenia superodpočtu u Vás.
       </p>
-      <a
-        href="https://www.smartech.sk"
-        target="_blank"
-        rel="noopener"
-        class="inline-block bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
-      >
-        Kontaktujte nás
-      </a>
+
+      <div class="home-contact-card">
+        <div>
+          <p class="home-contact-name">{contact.name}</p>
+          <p class="home-contact-role">{contact.role}</p>
+          <p class="home-contact-contact">
+            {contact.phone}
+            <br />
+            {contact.email}
+          </p>
+
+          <a
+            href="https://www.smartech.sk"
+            class="home-contact-button"
+            target="_blank"
+            rel="noopener"
+          >
+            Kontaktujte nás
+          </a>
+        </div>
+
+        <div class="home-contact-photo">
+          <img
+            src="/images/MGO.webp"
+            alt="Ing. Mgr. Martin Gondár"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>
