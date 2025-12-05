@@ -11,6 +11,6 @@ benefits:
 warning: "Patent Box môžete kombinovať aj so superodpočtom na výskum a vývoj – čím ešte viac zvýšite svoju daňovú efektivitu."
 ---
 
-## Pre koho je určený?
+### Pre koho je určený?
 
 Firmy, ktoré vlastnia, využívajú alebo vyvíjajú patenty, softvér alebo technické know-how.

@@ -1,5 +1,5 @@
 ---
-title: "Investície"
+title: "Superodpočet na investície"
 description: "Informácie o odpočte na investície do Priemyslu 4.0"
 hero:
   heading: "Investujte do budúcnosti výroby a ušetrite až 50 % na daniach."

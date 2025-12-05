@@ -2,7 +2,7 @@
 title: "Domov"
 description: "Premeňte inováciu na konkurenčnú výhodu aj vo vašom daňovom priznaní."
 hero:
-  heading: "Ušetrite dane pomocou superodpočtu na výskum a vývoj, investície a patent boxu."
+  heading: "Ušetrite dane pomocou superodpočtu na výskum a vývoj, superodpočtu na investície a patent boxu."
   text: "Legálne a bez zbytočného rizika."
 sections:
   - title: "Aký typ daňového zvýhodnenia Vás zaujíma?"
@@ -12,8 +12,8 @@ cards:
     description: "Pre firmy, ktoré inovujú, vyvíjajú nové produkty, procesy alebo technológie."
     link: "/vyskum-a-vyvoj"
     linkText: "Zistiť viac"
-  - title: "Patent Box"
-    description: "Pre spoločnosti, ktoré predávajú práva na použitie svojich nehmotných aktív – patenty, softvér, know-how."
+  - title: "Oslobodenie príjmov formou patent boxu"
+    description: "Pre spoločnosti, ktoré predávajú produkty alebo licencie na základe svojich nehmotných aktív – softvér, úžitkové vzory a patenty."
     link: "/patent-box"
     linkText: "Zistiť viac"
   - title: "Superodpočet na investície do Priemyslu 4.0"
@@ -24,5 +24,5 @@ cta:
   heading: "Získajte odpoveď ihneď od odborníka s praxou."
   text: "Každá firma je iná a preto sa radi pozrieme na konkrétne možnosti uplatnenia superodpočtu u Vás."
   buttonText: "Kontaktujte SmarTech Solutions"
-  buttonLink: "https://www.smartech.sk"
+  buttonLink: "https://www.smartech.sk/kontakt/predaudit-konzultacia"
 ---
