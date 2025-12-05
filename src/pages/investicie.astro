@@ -70,7 +70,29 @@ const contact = {
           {hero.text}
         </div>
       </div>
-      
+
+        {benefits && (
+          <h2 class="page-section-title">Prínosy</h2>
+          <ul class="space-y-4 mb-8">
+            {benefits.map((benefit) => (
+              <li class="flex gap-3">
+                <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span set:html={benefit} />
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {warning && (
+          <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-30">
+            <p class="text-amber-800">
+              <strong>Pozor:</strong> {warning}
+            </p>
+          </div>
+        )}
+
       <div class="vav-calc-card">
         <h2 class="vav-calc-heading">Kalkulačka úspory</h2>
         <InvesticieCalculator />
@@ -121,12 +143,12 @@ const contact = {
           </p>
 
           <a
-            href="https://www.smartech.sk"
+            href="https://www.smartech.sk/kontakt/predaudit-konzultacia"
             class="home-contact-button"
             target="_blank"
             rel="noopener"
           >
-            Kontaktujte nás
+            Kontaktujte SmarTech Solutions
           </a>
         </div>
 

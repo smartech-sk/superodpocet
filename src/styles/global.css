@@ -79,6 +79,11 @@ h2 {
   max-width: 650px;
 }
 
+h3 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
 /* Skip link pre prístupnosť */
 .skip-link {
   position: absolute;
@@ -246,7 +251,7 @@ h2 {
 
 .site-footer-columns {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
   align-items: flex-start;
   margin-bottom: 24px;
@@ -344,6 +349,7 @@ h2 {
 .home-section-divider--full {
   width: 100%;
   margin-bottom: 0;
+  border-radius: initial;
   height: 8px;
 }
 
@@ -451,6 +457,7 @@ h2 {
 .home-contact-contact {
   font-size: 24px; /* telefón a email 24px */
   margin: 0;
+  font-weight: 700;
   color: var(--color-red);
 }
 
@@ -640,6 +647,11 @@ padding-bottom: var(--section-padding-y);
   margin-top: 0;
 }
 
+.vav-intro-copy p {
+  margin: 50px 0 50px;
+  max-width: 700px;
+}
+
 /* ---------- VAV KALKULAČKA ---------- */
 
 .vav-calc-grid {
@@ -663,7 +675,7 @@ padding-bottom: var(--section-padding-y);
   background-color: rgba(255, 255, 255, 0.4);
   font-size: 15px;
   font-weight: 700;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
   flex: 1 0 auto;
   display: flex;
   align-items: center; 
@@ -672,7 +684,7 @@ padding-bottom: var(--section-padding-y);
 .vav-calc-input {
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
-  padding: 8px 10px;
+  padding: 10px 15px;
   font-size: 18px;
   font-weight: 700;
   text-align: left;
@@ -680,11 +692,15 @@ padding-bottom: var(--section-padding-y);
   background-color: #fff;
 }
 
+.vav-calc-input-space {
+  letter-spacing: 1.75px;
+}
+
 .vav-calc-plus-field {
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
   background-color: rgba(16, 68, 125, 0.1);
-  padding: 8px 10px;
+  padding: 10px 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -701,6 +717,10 @@ padding-bottom: var(--section-padding-y);
 /* spodný riadok – širšie polia */
 .vav-calc-field--wide {
   grid-column: span 2;
+}
+
+.vav-calc-coef-field--wide {
+  grid-column: span 2 ;
 }
 
 /* výsledkový pruh – gradient ako na designe */

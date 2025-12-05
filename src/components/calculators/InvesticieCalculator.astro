@@ -20,7 +20,7 @@
       <label for="i40-avg">PRIEMERNÁ HODNOTA INVESTÍCIÍ (POSLEDNÉ 3 ROKY)</label>
       <input
         id="i40-avg"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="100000"
@@ -34,7 +34,7 @@
       <label for="i40-plan">PLÁNOVANÁ VÝŠKA INVESTIČNÉHO PLÁNU (SPOLU)</label>
       <input
         id="i40-plan"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="100000"
@@ -48,7 +48,7 @@
       <label for="i40-depr">DAŇOVÉ ODPISY OPRÁVNENEJ INVESTÍCIE ZA ZDAŇOVACIE OBDOBIE</label>
       <input
         id="i40-depr"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="10000"
@@ -64,8 +64,8 @@
         id="i40-taxrate"
         class="vav-calc-input"
         type="number"
-        min="0"
-        max="99"
+        min="10"
+        max="24"
         step="1"
         value="21"
         data-input="taxRate"
@@ -133,6 +133,69 @@
       if (!isFinite(v) || isNaN(v) || v < 0) return 0;
       return v;
     }
+
+    // ===== NOVÉ: overlay formátovanie vstupov na "1 000 000 €" =====
+    var moneyOverlayMap = new WeakMap();
+
+    function updateMoneyOverlay(input) {
+      var overlay = moneyOverlayMap.get(input);
+      if (!overlay) return;
+
+      var raw = input.value.trim();
+      if (!raw) {
+        overlay.textContent = "";
+        return;
+      }
+
+      var value = parseInput(input);
+      overlay.textContent = formatCurrency(value);
+    }
+
+    function attachMoneyOverlay(inputs) {
+      inputs.forEach(function (input) {
+        if (!input) return;
+        var parent = input.parentElement;
+        if (!parent) return;
+
+        // wrapper okolo inputu
+        var wrapper = document.createElement("div");
+        wrapper.style.position = "relative";
+        wrapper.style.display = "block";
+        wrapper.style.width = "100%";
+
+        parent.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+
+        // input – skryjeme text, necháme caret + šípky
+        input.style.color = "transparent";
+        input.style.caretColor = "var(--color-blue)";
+        input.style.width = "100%";
+
+        // overlay, ktorý zobrazuje formátované číslo
+        var overlay = document.createElement("div");
+        overlay.style.position = "absolute";
+        overlay.style.left = "0";
+        overlay.style.top = "0";
+        overlay.style.right = "0";
+        overlay.style.bottom = "0";
+        overlay.style.display = "flex";
+        overlay.style.alignItems = "center";
+        overlay.style.justifyContent = "flex-start";
+        overlay.style.padding = "8px 15px";
+        overlay.style.fontSize = "18px";
+        overlay.style.fontWeight = "700";
+        overlay.style.pointerEvents = "none";
+        overlay.style.color = "var(--color-blue)";
+        overlay.style.textAlign = "left";
+
+        wrapper.appendChild(overlay);
+        moneyOverlayMap.set(input, overlay);
+
+        // prvotné zobrazenie
+        updateMoneyOverlay(input);
+      });
+    }
+    // ===== KONIEC NOVÉHO FORMÁTOVANIA =====
 
     // Výpočet sadzby odpočtu podľa tabuľky v § 30e ZDP:
     // - preinvestovaná priemerná hodnota investícií (min. 700 %),
@@ -214,6 +277,9 @@
         return;
       }
 
+      // pridať overlay formátovanie pre € vstupy
+      attachMoneyOverlay([avgInput, planInput, depInput]);
+
       function recalc() {
         var avg = parseInput(avgInput);
         var plan = parseInput(planInput);
@@ -236,7 +302,7 @@
             details.bandLabel +
             ". Použitá sadzba odpočtu: " +
             details.rate.toString() +
-            " % z daňového odpisu podľa § 30e zákona o dani z príjmov.";
+            " % z daňového odpisu podľa § 30e zákona o dani z príjmov. Výsledky sú orientačné a nenahrádzajú individuálne daňové poradenstvo.";
         } else {
           infoText =
             "Podmienky na uplatnenie odpočtu podľa § 30e ZDP nie sú splnené. " +
@@ -253,7 +319,13 @@
 
       [avgInput, planInput, depInput, taxRateInput].forEach(function (el) {
         if (!el) return;
-        el.addEventListener("input", recalc);
+        el.addEventListener("input", function () {
+          // aktualizovať overlay len pre € vstupy
+          if (el === avgInput || el === planInput || el === depInput) {
+            updateMoneyOverlay(el);
+          }
+          recalc();
+        });
       });
 
       recalc();
@@ -265,3 +337,4 @@
     }
   })();
 </script>
+

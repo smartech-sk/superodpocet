@@ -1,0 +1,403 @@
+<section class="vav-calc-wrapper" data-pb-calc>
+  <div class="vav-calc-grid">
+    <!-- OBDOBIE -->
+    <div class="vav-calc-field">
+      <label for="pb-year">OBDOBIE</label>
+      <select
+        id="pb-year"
+        class="vav-calc-input vav-calc-input--select"
+        data-year
+      >
+        <option value="2025" selected>2025</option>
+      </select>
+    </div>
+
+    <!-- SADZBA DANE Z PRÍJMU -->
+    <div class="vav-calc-field">
+      <label for="pb-tax">SADZBA DANE Z PRÍJMU</label>
+      <select
+        id="pb-tax"
+        class="vav-calc-input vav-calc-input--select"
+        data-tax
+      ></select>
+    </div>
+
+    <!-- AKTIVOVANÉ NÁKLADY NA VÝVOJ SW -->
+    <div class="vav-calc-field">
+      <label for="pb-activated">AKTIVOVANÉ NÁKLADY NA VÝVOJ SW *</label>
+      <input
+        id="pb-activated"
+        class="vav-calc-input vav-calc-input-space"
+        type="number"
+        min="0"
+        step="1000"
+        value="100000"
+        data-input="activated"
+      />
+    </div>
+
+    <!-- CELKOVÉ OSLOBODZOVANÉ PRÍJMY -->
+    <div class="vav-calc-field">
+      <label for="pb-total-income">CELKOVÉ OSLOBODZOVANÉ PRÍJMY *</label>
+      <input
+        id="pb-total-income"
+        class="vav-calc-input vav-calc-input-space"
+        type="number"
+        min="0"
+        step="1000"
+        value="200000"
+        data-input="totalIncome"
+      />
+    </div>
+
+    <!-- PONÍŽENIE O KOEFICIENTY § 13a 4) a 14) – toggle -->
+    <div class="vav-calc-field vav-calc-coef-field--wide">
+      <label>PONÍŽENIE O KOEFICIENTY § 13a 4) A 14)</label>
+      <div class="vav-calc-plus-field" data-toggle-coeff>
+        <span>+</span>
+      </div>
+    </div>
+
+    <!-- NÁKLADY NA NEHMOTNÉ VÝSLEDKY -->
+    <div class="vav-calc-field" data-coeff-row>
+      <label for="pb-intangibles">NÁKLADY NA NEHMOTNÉ VÝSLEDKY *</label>
+      <input
+        id="pb-intangibles"
+        class="vav-calc-input vav-calc-input-space"
+        type="number"
+        min="0"
+        step="1000"
+        value="5000"
+        data-input="intangibles"
+      />
+    </div>
+
+    <!-- NEAKTIVOVANÉ NÁKLADY NA VÝVOJ -->
+    <div class="vav-calc-field" data-coeff-row>
+      <label for="pb-nonactivated">NEAKTIVOVANÉ NÁKLADY NA VÝVOJ</label>
+      <input
+        id="pb-nonactivated"
+        class="vav-calc-input vav-calc-input-space"
+        type="number"
+        min="0"
+        step="1000"
+        value="10000"
+        data-input="nonActivated"
+      />
+    </div>
+  </div>
+
+  <!-- výsledky (riadky 11–13 z excelu) -->
+  <div class="vav-calc-results">
+    <!-- C11: Celkový oslobodzovaný výnos po kompenzácii -->
+    <div class="vav-calc-result-item">
+      <div class="vav-calc-result-value" data-output="exempt-income">0 €</div>
+      <div class="vav-calc-result-label">
+        celkový oslobodený výnos **
+      </div>
+    </div>
+
+    <!-- C12: Celková miera oslobodenia -->
+    <div class="vav-calc-result-item">
+      <div class="vav-calc-result-value" data-output="exempt-rate">0 %</div>
+      <div class="vav-calc-result-label">celková miera oslobodenia *</div>
+    </div>
+
+    <!-- C13: Celková daňová úľava -->
+    <div class="vav-calc-result-item">
+      <div class="vav-calc-result-value" data-output="tax-relief">0 €</div>
+      <div class="vav-calc-result-label">
+        celková daňová úľava *
+      </div>
+    </div>
+  </div>
+
+  <p class="vav-calc-note">
+    *počas celej doby odpisovania SW <br>
+    **po kompenzácií odpisov <br><br>
+    Kalkulačka vychádza z pravidiel patent boxu (§ 13a ZDP) pre softvér a
+    používa zjednodušenú výpočtovú logiku: základné
+    oslobodenie 50 % sa znižuje koeficientmi podľa § 13a ods. 4) a 14).
+    Výsledky sú orientačné a nenahrádzajú individuálne daňové poradenstvo.
+  </p>
+</section>
+
+<script>
+  (function () {
+    var TAX_OPTIONS = [
+      { value: 10, label: "10 % (výnosy do 100 tis. €)" },
+      { value: 21, label: "21 % (výnosy do 500 tis. €)" },
+      { value: 24, label: "24 % (výnosy nad 5 mil. €)" },
+    ];
+
+    var BASE_EXEMPTION = 0.5; // C8 = 50 % podľa § 13a ods. 1
+
+    function formatCurrency(value) {
+      if (!isFinite(value)) value = 0;
+      var rounded = Math.round(value);
+      var nbsp = "\u00A0"; // nedeliteľná medzera
+      return (
+        rounded.toLocaleString("sk-SK", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        nbsp +
+        "€"
+      );
+    }
+
+    function formatPercent(value) {
+      if (!isFinite(value)) value = 0;
+      var pct = value * 100;
+      var rounded = Math.round(pct * 10) / 10; // 1 desatinné miesto
+      return (
+        rounded.toLocaleString("sk-SK", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 1,
+        }) + " %"
+      );
+    }
+
+    function parseInput(el) {
+      if (!el) return 0;
+      var raw = el.value.replace(/\s/g, "").replace(",", ".");
+      var v = parseFloat(raw);
+      if (!isFinite(v) || isNaN(v) || v < 0) return 0;
+      return v;
+    }
+
+    // ===== NOVÉ: overlay formátovanie číselných vstupov na "200 000 €" =====
+    var moneyOverlayMap = new WeakMap();
+
+    function updateMoneyOverlay(input) {
+      var overlay = moneyOverlayMap.get(input);
+      if (!overlay) return;
+
+      var raw = input.value.trim();
+      if (!raw) {
+        overlay.textContent = "";
+        return;
+      }
+
+      var value = parseInput(input);
+      overlay.textContent = formatCurrency(value);
+    }
+
+    function attachMoneyOverlay(inputs) {
+      inputs.forEach(function (input) {
+        if (!input) return;
+        var parent = input.parentElement;
+        if (!parent) return;
+
+        // wrapper okolo inputu
+        var wrapper = document.createElement("div");
+        wrapper.style.position = "relative";
+        wrapper.style.display = "block";
+        wrapper.style.width = "100%";
+
+        parent.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+
+        // input – schováme text, necháme caret + šípky (step)
+        input.style.color = "transparent";
+        input.style.caretColor = "var(--color-blue)";
+        input.style.width = "100%";
+
+        // overlay, ktorý zobrazuje formátované číslo
+        var overlay = document.createElement("div");
+        overlay.style.position = "absolute";
+        overlay.style.left = "0";
+        overlay.style.top = "0";
+        overlay.style.right = "0";
+        overlay.style.bottom = "0";
+        overlay.style.display = "flex";
+        overlay.style.alignItems = "center";
+        overlay.style.justifyContent = "flex-start";
+        overlay.style.padding = "8px 15px";
+        overlay.style.fontSize = "18px";
+        overlay.style.fontWeight = "700";
+        overlay.style.pointerEvents = "none";
+        overlay.style.color = "var(--color-blue)";
+        overlay.style.textAlign = "left";
+
+        wrapper.appendChild(overlay);
+        moneyOverlayMap.set(input, overlay);
+
+        // prvotné zobrazenie
+        updateMoneyOverlay(input);
+      });
+    }
+    // ===== KONIEC NOVÉHO OVERLAY FORMÁTOVANIA =====
+
+    function clamp(v, min, max) {
+      if (v < min) return min;
+      if (v > max) return max;
+      return v;
+    }
+
+    function renderTaxOptions(taxSelect) {
+      if (!taxSelect) return;
+      var current = Number(taxSelect.value) || 0;
+      taxSelect.innerHTML = "";
+      TAX_OPTIONS.forEach(function (opt, index) {
+        var o = document.createElement("option");
+        o.value = String(opt.value);
+        o.textContent = opt.label;
+        if (opt.value === current || (!current && index === 1)) {
+          // default 21 %
+          o.selected = true;
+        }
+        taxSelect.appendChild(o);
+      });
+    }
+
+    function initCalculator(root) {
+      var yearSelect = root.querySelector("[data-year]");
+      var taxSelect = root.querySelector("[data-tax]");
+
+      var activatedInput = root.querySelector('input[data-input="activated"]');
+      var totalIncomeInput = root.querySelector(
+        'input[data-input="totalIncome"]'
+      );
+      var intangiblesInput = root.querySelector(
+        'input[data-input="intangibles"]'
+      );
+      var nonActivatedInput = root.querySelector(
+        'input[data-input="nonActivated"]'
+      );
+
+      var coeffRows = root.querySelectorAll("[data-coeff-row]");
+      var coeffToggle = root.querySelector("[data-toggle-coeff]");
+
+      var outExemptIncome = root.querySelector(
+        '[data-output="exempt-income"]'
+      );
+      var outExemptRate = root.querySelector('[data-output="exempt-rate"]');
+      var outTaxRelief = root.querySelector('[data-output="tax-relief"]');
+
+      if (
+        !taxSelect ||
+        !activatedInput ||
+        !totalIncomeInput ||
+        !outExemptIncome ||
+        !outExemptRate ||
+        !outTaxRelief
+      ) {
+        return;
+      }
+
+      // skryť koeficientové riadky pri štarte
+      coeffRows.forEach(function (row) {
+        row.style.display = "none";
+      });
+
+      renderTaxOptions(taxSelect);
+
+      // pridať overlay formátovanie pre € vstupy
+      attachMoneyOverlay([
+        activatedInput,
+        totalIncomeInput,
+        intangiblesInput,
+        nonActivatedInput,
+      ]);
+
+      var coeffEnabled = false;
+
+      function recalc() {
+        var activated = parseInput(activatedInput); // C4
+        var totalIncome = parseInput(totalIncomeInput); // C7
+        var taxRateValue = Number(taxSelect.value) || 0; // %
+        var taxRate = taxRateValue / 100; // C3
+
+        var intangibles = coeffEnabled ? parseInput(intangiblesInput) : 0; // C5
+        var nonActivated = coeffEnabled ? parseInput(nonActivatedInput) : 0; // C6
+
+        // C9: Zníženie oslobodenia podľa §13a 4) = (C4 - C5) / C4
+        var coef4;
+        if (activated <= 0) {
+          coef4 = 1; // keď nie sú aktivované náklady, neponižujeme
+        } else {
+          coef4 = (activated - intangibles) / activated;
+          coef4 = clamp(coef4, 0, 1);
+        }
+
+        // C10: Zníženie oslobodenia podľa §13a 14) = C4 / (C4 + C6)
+        var coef14;
+        var denom = activated + nonActivated;
+        if (denom <= 0) {
+          coef14 = 1;
+        } else {
+          coef14 = activated / denom;
+          coef14 = clamp(coef14, 0, 1);
+        }
+
+        // C12: Celková miera oslobodenia = C8 * C9 * C10
+        var totalExemptRate = BASE_EXEMPTION * coef4 * coef14;
+
+        // C11: Celkový oslobodený výnos = C7 * C8 * C9 * C10
+        var exemptIncome = totalIncome * totalExemptRate;
+
+        // C13: Celková daňová úľava = (C7 - C4) * C12 * C3
+        var taxRelief = (totalIncome - activated) * totalExemptRate * taxRate;
+        if (taxRelief <= 0) {
+          taxRelief = 0;
+        }
+
+        outExemptIncome.textContent = formatCurrency(exemptIncome);
+        outExemptRate.textContent = formatPercent(totalExemptRate);
+        outTaxRelief.textContent = formatCurrency(taxRelief);
+      }
+
+      taxSelect.addEventListener("change", recalc);
+
+      activatedInput.addEventListener("input", function () {
+        updateMoneyOverlay(activatedInput);
+        recalc();
+      });
+
+      totalIncomeInput.addEventListener("input", function () {
+        updateMoneyOverlay(totalIncomeInput);
+        recalc();
+      });
+
+      if (intangiblesInput)
+        intangiblesInput.addEventListener("input", function () {
+          updateMoneyOverlay(intangiblesInput);
+          recalc();
+        });
+
+      if (nonActivatedInput)
+        nonActivatedInput.addEventListener("input", function () {
+          updateMoneyOverlay(nonActivatedInput);
+          recalc();
+        });
+
+      if (coeffToggle) {
+        coeffToggle.addEventListener("click", function () {
+          coeffEnabled = !coeffEnabled;
+          coeffRows.forEach(function (row) {
+            row.style.display = coeffEnabled ? "" : "none";
+          });
+          var span = coeffToggle.querySelector("span");
+          if (span) span.textContent = coeffEnabled ? "−" : "+";
+          recalc();
+        });
+      }
+
+      // zareaguj aj na zmenu roku (aktuálne len 2025, ale pre budúcnosť)
+      if (yearSelect) {
+        yearSelect.addEventListener("change", function () {
+          recalc();
+        });
+      }
+
+      recalc();
+    }
+
+    if (typeof document !== "undefined") {
+      var roots = document.querySelectorAll("[data-pb-calc]");
+      roots.forEach(initCalculator);
+    }
+  })();
+</script>
+

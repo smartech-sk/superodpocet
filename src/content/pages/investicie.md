@@ -1,8 +1,8 @@
 ---
-title: "Investície"
+title: "Superodpočet na investície"
 description: "Informácie o odpočte na investície do Priemyslu 4.0"
 hero:
-  heading: "Investujte do budúcnosti výroby a ušetrite až 50 % na daniach"
+  heading: "Investujte do budúcnosti výroby a ušetrite až 50 % na daniach."
   text: "Investujete do automatizácie, digitalizácie alebo robotizácie? Vďaka tomuto špecifickému odpočtu si môžete ušetriť na daniach z príjmov pri investíciách do tzv. technológií Priemyslu 4.0."
 benefits:
   - "Odpočet až 50 % hodnoty oprávnenej investície"

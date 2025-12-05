@@ -15,7 +15,7 @@
       <label for="vav-current">NÁKLADY VÝSKUMU A VÝVOJA</label>
       <input
         id="vav-current"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="10000"
@@ -40,10 +40,10 @@
 
     <!-- NÁKLADY 2024 -->
     <div class="vav-calc-field vav-calc-field--wide" data-yoy-row>
-      <label for="vav-2024">NÁKLADY VÝSKUMU A VÝVOJA OBDOBIE MINULÉ</label>
+      <label for="vav-2024">NÁKLADY VÝSKUMU A VÝVOJA - OBDOBIE MINULÉ</label>
       <input
         id="vav-2024"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="10000"
@@ -54,10 +54,10 @@
 
     <!-- NÁKLADY 2023 -->
     <div class="vav-calc-field vav-calc-field--wide" data-yoy-row>
-      <label for="vav-2023">NÁKLADY VÝSKUMU A VÝVOJA OBDOBIE PREDMINULÉ</label>
+      <label for="vav-2023">NÁKLADY VÝSKUMU A VÝVOJA - OBDOBIE PREDMINULÉ</label>
       <input
         id="vav-2023"
-        class="vav-calc-input"
+        class="vav-calc-input vav-calc-input-space"
         type="number"
         min="0"
         step="10000"
@@ -109,10 +109,10 @@
     const rounded = Math.round(value); // zaokrúhlenie na celé číslo
     const nbsp = "\u00A0";
     return (
-        rounded.toLocaleString("sk-SK", {
+      rounded.toLocaleString("sk-SK", {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
-        }) + nbsp + "€"
+      }) + nbsp + "€"
     );
   }
 
@@ -121,6 +121,65 @@
     const raw = el.value.replace(",", ".");
     const v = parseFloat(raw);
     return !isFinite(v) || v < 0 ? 0 : v;
+  }
+
+  // --- NOVÉ: mapa input -> overlay element ---
+  const moneyOverlayMap = new WeakMap<HTMLInputElement, HTMLElement>();
+
+  function updateMoneyOverlay(input: HTMLInputElement) {
+    const overlay = moneyOverlayMap.get(input);
+    if (!overlay) return;
+
+    const raw = input.value.trim();
+    if (!raw) {
+      overlay.textContent = "";
+      return;
+    }
+
+    const value = parseInput(input);
+    overlay.textContent = formatCurrency(value);
+  }
+
+  function attachMoneyOverlay(inputs: HTMLInputElement[]) {
+    inputs.forEach((input) => {
+      const parent = input.parentElement;
+      if (!parent) return;
+
+      // wrapper okolo inputu
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+      wrapper.style.display = "block";
+      wrapper.style.width = "100%";
+
+      parent.insertBefore(wrapper, input);
+      wrapper.appendChild(input);
+
+      // input – text skryjeme, caret necháme viditeľný
+      input.style.color = "transparent";
+      (input.style as any).caretColor = "var(--color-blue)";
+      input.style.width = "100%";
+
+      // overlay, ktorý zobrazuje formátované číslo
+      const overlay = document.createElement("div");
+      overlay.style.position = "absolute";
+      overlay.style.left = "0";
+      overlay.style.top = "0";
+      overlay.style.right = "0";
+      overlay.style.bottom = "0";
+      overlay.style.display = "flex";
+      overlay.style.alignItems = "center";
+      overlay.style.padding = "8px 15px";
+      overlay.style.fontSize = "18px";
+      overlay.style.fontWeight = "700";
+      overlay.style.pointerEvents = "none";
+      overlay.style.color = "var(--color-blue)";
+
+      wrapper.appendChild(overlay);
+      moneyOverlayMap.set(input, overlay);
+
+      // prvotné zobrazenie
+      updateMoneyOverlay(input);
+    });
   }
 
   function initCalculator(root: HTMLElement) {
@@ -155,11 +214,17 @@
       return;
     }
 
+    // nastavíme step/min a zozbierame číselné vstupy
+    const moneyInputs: HTMLInputElement[] = [];
     [inputCurrent, input2024, input2023].forEach((el) => {
       if (!el) return;
       el.step = String(STEP);
       el.min = "0";
+      moneyInputs.push(el);
     });
+
+    // pripojíme overlay s formátovaním 200 000 €
+    attachMoneyOverlay(moneyInputs);
 
     let yoyEnabled = false;
 
@@ -173,7 +238,8 @@
         const o = document.createElement("option");
         o.value = String(opt.value);
         o.textContent = opt.label;
-        if (opt.value === currentValue || (!currentValue && index === 0)) {
+        if (opt.value === currentValue || (!currentValue && index === 1)) {
+          // default 21 %
           o.selected = true;
         }
         taxSelect.appendChild(o);
@@ -221,8 +287,16 @@
 
     taxSelect.addEventListener("change", recalculate);
 
-    [inputCurrent, input2024, input2023].forEach((el) => {
-      el?.addEventListener("input", recalculate);
+    // vstupy – pri zmene prepočítame a zaktualizujeme overlay
+    moneyInputs.forEach((el) => {
+      el.addEventListener("input", () => {
+        updateMoneyOverlay(el);
+        recalculate();
+      });
+      el.addEventListener("change", () => {
+        updateMoneyOverlay(el);
+        recalculate();
+      });
     });
 
     toggleYoyBtn?.addEventListener("click", () => {
